@@ -120,9 +120,27 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
   let launchOptions;
   if (chromium) {
     try {
-      const execPath = await (typeof chromium.executablePath === 'function'
+      // Resolve executablePath whether it's a function or a value
+      let execPath = await (typeof chromium.executablePath === 'function'
         ? chromium.executablePath()
         : chromium.executablePath);
+
+      // If not provided or missing on disk, try known direct bin paths
+      if (!execPath || !(await pathExists(execPath))) {
+        const cwd = process.cwd();
+        const directPaths = [
+          path.join(cwd, 'node_modules', '@sparticuz', 'chromium', 'bin', 'chromium'),
+          path.join(cwd, 'node_modules', '@sparticuz', 'chrome-aws-lambda', 'bin', 'chromium'),
+          path.join(cwd, 'node_modules', 'chrome-aws-lambda', 'bin', 'chromium'),
+        ];
+        for (const p of directPaths) {
+          if (await pathExists(p)) {
+            execPath = p;
+            break;
+          }
+        }
+      }
+
       if (execPath && (await pathExists(execPath))) {
         launchOptions = {
           args: [...(chromium.args || []), `--lang=${lang === 'ar' ? 'ar' : 'en-US'}`],
@@ -132,7 +150,7 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
         };
         console.log(`[Puppeteer] Using Lambda-style Chromium at: ${execPath}`);
       } else {
-        console.warn('[Puppeteer] Lambda-style Chromium executablePath not found, falling back...');
+        console.warn('[Puppeteer] Lambda-style Chromium executablePath not found (including direct bin paths), falling back...');
       }
     } catch (e) {
       console.warn(`[Puppeteer] Lambda-style Chromium error: ${e?.message || e}. Falling back...`);
