@@ -62,7 +62,7 @@ async function getPuppeteer() {
   }
 }
 async function getChromium() {
-  const candidates = ['@sparticuz/chrome-aws-lambda', 'chrome-aws-lambda'];
+  const candidates = ['@sparticuz/chromium', '@sparticuz/chrome-aws-lambda', 'chrome-aws-lambda'];
   for (const name of candidates) {
     try {
       const m = await import(name);
@@ -120,20 +120,22 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
   let launchOptions;
   if (chromium) {
     try {
-      const execPath = await chromium.executablePath;
+      const execPath = await (typeof chromium.executablePath === 'function'
+        ? chromium.executablePath()
+        : chromium.executablePath);
       if (execPath && (await pathExists(execPath))) {
         launchOptions = {
-          args: [...chromium.args, `--lang=${lang === 'ar' ? 'ar' : 'en-US'}`],
+          args: [...(chromium.args || []), `--lang=${lang === 'ar' ? 'ar' : 'en-US'}`],
           defaultViewport: chromium.defaultViewport,
           executablePath: execPath,
-          headless: chromium.headless,
+          headless: chromium.headless ?? 'new',
         };
-        console.log(`[Puppeteer] Using @sparticuz/chrome-aws-lambda at: ${execPath}`);
+        console.log(`[Puppeteer] Using Lambda-style Chromium at: ${execPath}`);
       } else {
-        console.warn('[Puppeteer] chrome-aws-lambda executablePath not found, falling back...');
+        console.warn('[Puppeteer] Lambda-style Chromium executablePath not found, falling back...');
       }
     } catch (e) {
-      console.warn(`[Puppeteer] chrome-aws-lambda error: ${e?.message || e}. Falling back...`);
+      console.warn(`[Puppeteer] Lambda-style Chromium error: ${e?.message || e}. Falling back...`);
     }
   }
 
