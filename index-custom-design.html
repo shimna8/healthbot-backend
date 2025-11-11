@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeLungs - Lung Health Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #2c5f6f 0%, #4a8a9e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 50px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background-color: #1a9b8e;
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            background-color: #168a7e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        /* Popup Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            height: 600px;
+            max-height: 90vh;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-header {
+            display: none; /* Hide header bar for chat modal */
+        }
+
+        .modal-header h2 {
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 32px;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            z-index: 1000;
+        }
+
+        .close-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow: visible; /* allow suggested actions to show */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        #webchat {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #2c5f6f;
+        }
+
+        /* Keep composer visible so suggested actions can render */
+        #webchat .webchat__composer {
+            display: flex !important;
+            flex-direction: column !important;
+            height: auto !important;
+            min-height: 90px !important;
+            padding: 0 20px 30px 20px !important;
+            background: transparent !important;
+            position: relative !important;
+            z-index: 10 !important;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2c5f6f;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* ============================================
+           CUSTOM DESIGN: ONE QUESTION AT A TIME
+           ============================================ */
+
+        /* Show full context to ensure options render reliably */
+        /* Previously hid all prev activities; removing to avoid hiding the card with buttons */
+        /* One-question-at-a-time with slide transitions */
+        #webchat .webchat__basic-transcript__activity:last-child {
+            animation: sl-in-up 320ms ease-out both !important;
+        }
+
+        #webchat .webchat__basic-transcript__activity:not(:last-child) {
+            animation: sl-out-up 240ms ease-in both !important;
+            opacity: 0 !important;
+            transform: translateY(-16px) !important;
+            max-height: 0 !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none !important;
+        }
+
+        @keyframes sl-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes sl-out-up {
+            from { opacity: 1; transform: translateY(0); max-height: 500px; }
+            to { opacity: 0; transform: translateY(-16px); max-height: 0; }
+        }
+
+        /* Hide only the text input, keep send box container so suggested actions can render */
+        #webchat .webchat__send-box-text-box {
+            display: none !important;
+        }
+        /* Optional: hide send and mic buttons if present */
+        #webchat .webchat__send-button,
+        #webchat .webchat__microphone-button {
+            display: none !important;
+        }
+
+        /* Hide avatars to save space */
+        #webchat .webchat__bubble__avatar {
+            display: none !important;
+        }
+
+        /* Make the question text LARGE and centered */
+        #webchat .webchat__bubble__content {
+            font-size: 36px !important;
+            line-height: 1.5 !important;
+            text-align: center !important;
+            padding: 40px 60px 12px 60px !important;
+            color: #1e3a5f !important;
+            font-weight: 400 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            max-width: 900px !important;
+            margin: 0 auto !important;
+        }
+
+        /* Remove bubble styling */
+        #webchat .webchat__bubble {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            max-width: 100% !important;
+        }
+
+        /* Center the entire activity */
+        #webchat .webchat__basic-transcript__activity {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+        }
+
+        /* Make buttons BIG and centered - FORCE VISIBILITY */
+        #webchat .webchat__suggested-actions {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            flex-direction: row !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 24px !important;
+            padding: 6px 40px 40px 40px !important;
+            flex-wrap: nowrap !important;
+            margin: 0 !important;
+            position: relative !important;
+            z-index: 10 !important;
+        }
+
+        /* Force show suggested actions container */
+        #webchat .webchat__suggested-actions__stack,
+        #webchat .webchat__suggested-actions__carousel {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        #webchat .webchat__suggested-action {
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            min-width: 320px !important;
+            width: 320px !important;
+            height: 56px !important;
+            font-size: 18px !important;
+            font-weight: 500 !important;
+            border-radius: 26px !important;
+            border: none !important;
+            background: #6bcdb8 !important;
+            color: white !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            box-shadow: 0 3px 10px rgba(94, 197, 182, 0.25) !important;
+            margin: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        #webchat .webchat__suggested-action:hover {
+            background: #4db3a4 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 16px rgba(94, 197, 182, 0.4) !important;
+        }
+
+        #webchat .webchat__suggested-action:active {
+            transform: translateY(0) !important;
+        }
+
+        /* Ensure button text is visible */
+        #webchat .webchat__suggested-action__button {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            width: 100% !important;
+            height: 100% !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: white !important;
+            font-size: 20px !important;
+            font-weight: 600 !important;
+        }
+
+        /* Button text */
+        #webchat .webchat__suggested-action__button span {
+            color: white !important;
+            font-size: 20px !important;
+            font-weight: 600 !important;
+        }
+
+        /* Override any hiding of suggested actions */
+        #webchat [role="group"][aria-label*="Suggested"],
+        #webchat [role="group"][aria-label*="suggested"],
+        #webchat div[class*="suggested"] {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        /* Hide scroll bar */
+        #webchat .webchat__basic-transcript__scrollable {
+            overflow: hidden !important;
+            scrollbar-width: none !important;
+        }
+
+        #webchat .webchat__basic-transcript__scrollable::-webkit-scrollbar {
+            display: none !important;
+        }
+
+        /* Remove padding and center transcript (do not force full height to avoid hiding composer) */
+        #webchat .webchat__basic-transcript {
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: auto !important;
+            min-height: 0 !important;
+        }
+
+        /* Center content vertically in the window without stealing space from composer */
+        #webchat .webchat__basic-transcript__scrollable {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 0 !important;
+            height: auto !important;
+        }
+
+        /* Ensure activity container is centered */
+        #webchat .webchat__basic-transcript__activity {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: auto !important;
+        }
+
+        /* Center the bubble row */
+        #webchat .webchat__bubble__row {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            margin-top: 8vh !important; /* visually center the question */
+            margin-bottom: 1vh !important;
+        }
+
+        /* Ensure bubble is centered */
+        #webchat .webchat__bubble {
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+
+        /* Hide timestamps and status row inside Web Chat */
+        #webchat .webchat__bubble__timestamp,
+        #webchat .webchat__stacked-layout__status,
+        #webchat .webchat__status,
+        #webchat [class*="timestamp"],
+        #webchat time {
+            display: none !important;
+        }
+
+        /* Hide "Bot is typing" indicator entirely to avoid hiding last message */
+        #webchat .webchat__typing-indicator {
+            display: none !important;
+        }
+
+        /* Adaptive Card (final screen) styling to match mock */
+        #webchat .webchat__bubble__content .ac-adaptiveCard {
+            text-align: left !important;
+            font-size: 16px !important;
+            color: #1e3a5f !important;
+            background: #ffffff !important;
+            padding: 60px 70px !important;
+            border-radius: 12px !important;
+            box-shadow: none !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+        }
+        #webchat .ac-adaptiveCard .ac-textBlock { color: #1e3a5f !important; text-align: left !important; }
+        /* Assume first textBlock is the big title */
+        #webchat .ac-adaptiveCard .ac-textBlock:first-of-type {
+            font-size: 42px !important;
+            line-height: 1.25 !important;
+            font-weight: 600 !important;
+            letter-spacing: -0.5px !important;
+            margin-top: 10px !important;
+        }
+        /* Assume second textBlock is the description */
+        #webchat .ac-adaptiveCard .ac-textBlock:first-of-type + .ac-textBlock {
+            margin-top: 18px !important;
+            font-size: 16px !important;
+            color: #333 !important;
+            line-height: 1.8 !important;
+            max-width: 700px !important;
+        }
+        /* Action (Download Summary) styling */
+        #webchat .ac-adaptiveCard .ac-actionSet { margin-top: 28px !important; }
+        #webchat .ac-adaptiveCard .ac-actionSet button.ac-pushButton {
+            background: #1a9b8e !important;
+            color: #ffffff !important;
+            border: none !important;
+            height: 56px !important;
+            padding: 0 28px !important;
+            border-radius: 28px !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 6px 16px rgba(26,155,142,0.25) !important;
+            min-width: 260px !important;
+        }
+        #webchat .ac-adaptiveCard .ac-actionSet button.ac-pushButton:hover { background: #168a7e !important; }
+
+
+        /* Responsive design for webchat */
+        @media (max-width: 768px) {
+            #webchat .webchat__bubble__content {
+                font-size: 26px !important;
+                padding: 60px 30px 12px 30px !important;
+            }
+
+            #webchat .webchat__suggested-action {
+                min-width: 340px !important;
+                height: 60px !important;
+                font-size: 20px !important;
+            }
+
+            #webchat .webchat__suggested-actions {
+                padding: 12px 30px 60px 30px !important;
+                gap: 20px !important;
+                flex-wrap: wrap !important;
+            }
+
+            .modal-content {
+                width: 95%;
+                height: 90vh;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.4rem;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                height: 90vh;
+            }
+
+            #webchat .webchat__bubble__content {
+                font-size: 20px !important;
+                padding: 40px 20px 12px 20px !important;
+            }
+
+            #webchat .webchat__suggested-actions {
+                gap: 16px !important;
+                flex-wrap: wrap !important;
+            }
+
+            #webchat .webchat__suggested-action {
+                min-width: 280px !important;
+                height: 56px !important;
+                font-size: 18px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Are Your Lungs Safe?</h1>
+        <p class="subtitle">Let SafeLungs Help You Find Out</p>
+        <p class="description">
+            Take SafeLungs Assessment to understand your lung health better and get personalized recommendations.
+        </p>
+        <button class="cta-button" onclick="openHealthBot()">Start SafeLungs Assessment</button>
+    </div>
+
+    <!-- Welcome Screen 1 -->
+    <div id="welcomeModal1" class="modal">
+        <div class="modal-content" style="height: 600px; max-height: 90vh; overflow-y: hidden;">
+            <div style="padding: 40px; position: relative;">
+                <button class="close-button" onclick="closeAllModals()" style="position: absolute; top: 20px; right: 20px; color: #666;">&times;</button>
+
+                <h2 style="color: #1e3a5f; font-size: 32px; margin-bottom: 25px;">Welcome to SafeLungs</h2>
+
+                <p style="color: #333; font-size: 16px; line-height: 1.8; margin-bottom: 25px;">
+                    You are about to take your first important step in understanding your lung health. After answering my questions, you can save and print out your answers summary and bring it with you to your doctor's visit. This assessment can be completed for yourself or on behalf of someone you care about. We will begin the test when you are ready.
+                </p>
+
+                <button class="cta-button" onclick="showWelcomeScreen2()" style="margin-top: 20px;">Next</button>
+
+                <p style="color: #999; font-size: 13px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                    AE-NON-00659. Expiry Date: 8.10.2027
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Screen 2 -->
+    <div id="welcomeModal2" class="modal">
+        <div class="modal-content" style="height: 600px; max-height: 90vh; overflow-y: hidden;">
+            <div style="padding: 40px; position: relative;">
+                <button class="close-button" onclick="closeAllModals()" style="position: absolute; top: 20px; right: 20px; color: #666;">&times;</button>
+
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C10.9 2 10 2.9 10 4C10 4.7 10.4 5.4 11 5.7V7C8.2 7.4 6 9.7 6 12.5V17L4 19V20H20V19L18 17V12.5C18 9.7 15.8 7.4 13 7V5.7C13.6 5.4 14 4.7 14 4C14 2.9 13.1 2 12 2ZM12 9C14.2 9 16 10.8 16 13V18H8V13C8 10.8 9.8 9 12 9Z" fill="#0066cc"/>
+                    </svg>
+                    <h2 style="color: #0066cc; font-size: 28px; margin: 0;">SafeLungs</h2>
+                </div>
+
+                <p style="color: #333; font-size: 16px; line-height: 1.8; margin-bottom: 20px;">
+                    Before we begin, I want to make it clear that I am not a diagnostic tool or provide any form of healthcare advice, and therefore do not replace contact with healthcare professionals or a physician's assessment. My aim is to increase awareness among adults about lung diseases, including lung cancer, and to help those who have completed the questionnaire to understand, on a general basis, the possible next steps that are available. Please note that if you are acutely ill, you should contact healthcare services, for advice.
+                </p>
+
+                <p style="color: #333; font-size: 16px; font-weight: 600; margin-bottom: 25px;">
+                    I am developed by MSD.
+                </p>
+
+                <button class="cta-button" onclick="showChatModal()" style="margin-top: 20px;">Move On</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeHealthBot()">&times;</button>
+            <div class="modal-header">
+                <h2>SafeLungs Health Assessment</h2>
+            </div>
+            <div class="modal-body">
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Connecting to SafeLungs...</p>
+                </div>
+                <!-- Direct Line Web Chat -->
+                <div id="webchat" style="height: 100%; width: 100%; display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bot Framework Web Chat -->
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+
+    <script>
+        // Use relative URL when on same server, or full URL for external hosting
+        const API_BASE_URL = window.location.origin;
+
+        // Show first welcome screen
+        function openHealthBot() {
+            const modal = document.getElementById('welcomeModal1');
+            modal.classList.add('active');
+        }
+
+        // Show second welcome screen
+        function showWelcomeScreen2() {
+            document.getElementById('welcomeModal1').classList.remove('active');
+            document.getElementById('welcomeModal2').classList.add('active');
+        }
+
+        // Show chat modal and initialize bot
+        async function showChatModal() {
+            // Hide welcome screen
+            document.getElementById('welcomeModal2').classList.remove('active');
+
+            // Show chat modal
+            const modal = document.getElementById('chatModal');
+            const loading = document.getElementById('loading');
+            const webchatDiv = document.getElementById('webchat');
+
+            modal.classList.add('active');
+            loading.style.display = 'block';
+            webchatDiv.innerHTML = '';
+
+            try {
+                // Get Direct Line token from your API
+                console.log('Fetching Direct Line token...');
+                const response = await fetch(`${API_BASE_URL}/api/token`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    mode: 'cors'
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Token API error:', response.status, errorText);
+                    throw new Error(`Failed to get token: ${response.status} - ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log('Token received successfully:', data);
+
+                // Create Direct Line connection
+                const directLine = window.WebChat.createDirectLine({
+                    token: data.token
+                });
+
+                // Track last message to prevent consecutive duplicates
+                let lastMessageText = null;
+
+                // Create store with middleware to invoke scenario and filter duplicates
+                const store = window.WebChat.createStore({}, ({ dispatch }) => next => action => {
+                    if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
+                        console.log('✓ Direct Line connection established');
+                        // Dispatch InitConversation to trigger the scenario
+                        dispatch({
+                            type: 'DIRECT_LINE/POST_ACTIVITY',
+                            meta: { method: 'keyboard' },
+                            payload: {
+                                activity: {
+                                    type: 'invoke',
+                                    name: 'InitConversation',
+                                    locale: 'en-US',
+                                    value: {
+                                        triggeredScenario: {
+                                            trigger: 'questionnaireflow001',
+                                            args: {}
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        console.log('✓ InitConversation sent to bot');
+                    }
+
+                    // Log outgoing messages (user answers)
+                    if (action.type === 'DIRECT_LINE/POST_ACTIVITY') {
+                        const activity = action.payload.activity;
+                        if (activity.type === 'message' && activity.text) {
+                            console.log('📤 User sent answer:', activity.text);
+                        }
+                    }
+
+                    // Filter consecutive duplicate messages from bot
+                    if (action.type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
+                        const activity = action.payload.activity;
+
+                        // Log incoming bot messages
+                        if (activity.type === 'message' && activity.text) {
+                            console.log('📥 Bot received message:', activity.text.substring(0, 100));
+                        }
+
+                        // Log suggested actions on incoming activities (to verify Yes/No are present)
+                        if (activity.suggestedActions && activity.suggestedActions.actions) {
+                            const titles = activity.suggestedActions.actions.map(a => a.title || a.value || a.text);
+                            console.log('🎯 Bot suggested actions:', titles.join(' | '));
+                        }
+
+                        // Log adaptive cards for debugging
+                        if (Array.isArray(activity.attachments)) {
+                            const types = activity.attachments.map(att => att.contentType);
+                            if (types.length) {
+                                console.log('🧩 Bot attachments:', types.join(', '));
+                            }
+                        }
+
+                        if (activity.type === 'message' && activity.text && activity.from && activity.from.id === 'lungbot-vxavep9') {
+                            // If this is the same text as the last message, skip it
+                            if (activity.text === lastMessageText) {
+                                console.log('⚠️ Skipping duplicate consecutive message');
+                                return; // Don't pass this action through
+                            }
+                            lastMessageText = activity.text;
+                        }
+                    }
+
+                    return next(action);
+                });
+
+                // Activity middleware: render only bot activities (hide user echo)
+                const onlyBotActivity = () => next => props => {
+                    const { activity } = props || {};
+                    if (activity && activity.from && activity.from.role === 'user') {
+                        return () => false; // do not render user activities
+                    }
+                    return next(props);
+                };
+
+
+                // Render Web Chat
+                window.WebChat.renderWebChat(
+                    {
+                        directLine: directLine,
+                        store: store,
+                        locale: 'en-US',
+                        activityMiddleware: onlyBotActivity,
+                        styleOptions: {
+                            // Hide upload button (keep send box container so suggested actions can render)
+                            hideUploadButton: true,
+
+                            // Additional style options for better appearance
+                            backgroundColor: 'white',
+
+                            // These will be overridden by CSS but good to set
+                            bubbleBackground: 'transparent',
+                            bubbleFromUserBackground: 'transparent',
+
+                            // Suggested action button colors (CSS will override but fallback)
+                            suggestedActionBackground: '#5ec5b6',
+                            suggestedActionBackgroundOnHover: '#4db3a4',
+                            suggestedActionBackgroundOnActive: '#3da393',
+                            suggestedActionTextColor: 'white',
+                            suggestedActionBorderRadius: 30,
+                            suggestedActionHeight: 60
+                        }
+                    },
+                    webchatDiv
+                );
+
+                // Hide loading and show webchat
+                loading.style.display = 'none';
+                webchatDiv.style.display = 'block';
+
+                console.log('✓ Web Chat initialized successfully');
+
+            } catch (error) {
+                console.error('Error initializing health bot:', error);
+                const errorMessage = error.message || 'Unknown error';
+                loading.innerHTML = `
+                    <div style="color: #d32f2f; padding: 20px;">
+                        <p style="font-weight: bold; margin-bottom: 10px; font-size: 1.1rem;">Connection Failed</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 10px;">Unable to connect to SafeLungs.</p>
+                        <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Error: ${errorMessage}</p>
+                        <button onclick="closeHealthBot()" style="margin-top: 10px; padding: 10px 20px; background: #2c5f6f; color: white; border: none; border-radius: 5px; cursor: pointer;">Close</button>
+                        <button onclick="closeHealthBot(); setTimeout(openHealthBot, 500);" style="margin-top: 10px; margin-left: 10px; padding: 10px 20px; background: #1a9b8e; color: white; border: none; border-radius: 5px; cursor: pointer;">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        function closeHealthBot() {
+            const modal = document.getElementById('chatModal');
+            modal.classList.remove('active');
+
+            // Reset modal content
+            setTimeout(() => {
+                const webchatDiv = document.getElementById('webchat');
+                const loading = document.getElementById('loading');
+
+                // Clear webchat
+                webchatDiv.innerHTML = '';
+                webchatDiv.style.display = 'none';
+
+                // Show loading again
+                loading.style.display = 'block';
+                loading.innerHTML = `
+                    <div class="spinner"></div>
+                    <p>Connecting to SafeLungs...</p>
+                `;
+            }, 300);
+        }
+
+        function closeAllModals() {
+            document.getElementById('welcomeModal1').classList.remove('active');
+            document.getElementById('welcomeModal2').classList.remove('active');
+            closeHealthBot();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('chatModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeHealthBot();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeHealthBot();
+            }
+        });
+    </script>
+</body>
+</html>
+

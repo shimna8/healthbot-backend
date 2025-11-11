@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Health Assessment Report</title>
+  <style>
+    @page { size: A4; margin: 10mm; }
+    * { box-sizing: border-box; }
+    body { font-family: "Noto Sans", Arial, Helvetica, sans-serif; color: #1a1a1a; margin: 0; }
+    .page { width: 100%; }
+    .container { width: 100%; max-width: 794px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px; }
+    .logo { font-weight: 700; color: #0a7cc1; font-size: 18px; }
+    .logo.right { color: #0b8f6a; }
+    .logo img { height: 28px; display: block; }
+
+    .banner { background: linear-gradient(90deg,#1aa47b,#2ec4b6); color: #fff; padding: 12px 16px; text-align: center; border-radius: 8px; margin: 6px 8px 16px; font-size: 13px; }
+    .summary { display: grid; grid-template-columns: 1fr 160px; gap: 16px; background: #f5faf8; margin: 0 8px 16px; border-radius: 8px; padding: 16px; }
+    .summary h2 { margin: 0 0 6px; color: #0a7cc1; font-size: 16px; }
+    .summary p { margin: 0; font-size: 12px; color: #444; }
+    .summary .photo { width: 160px; height: 120px; border-radius: 8px; background: url('https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=800&auto=format&fit=crop') center/cover no-repeat; }
+
+    h3.title { color: #0a7cc1; margin: 20px 8px 6px; font-size: 15px; }
+    .card { margin: 0 8px 14px; border: 1px solid #e6eef5; border-radius: 10px; overflow: hidden; }
+    .card .section { padding: 14px 16px; }
+    .muted { color: #6b7280; font-size: 12px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .info-list { list-style: none; padding: 0; margin: 0; font-size: 12px; }
+    .info-list li { padding: 6px 8px; border: 1px solid #e6eef5; border-radius: 6px; background: #f9fcff; }
+
+    .symp { border-left: 4px solid #22c55e; }
+    .symp.neg { border-left-color: #ef4444; }
+    .symp h4 { margin: 0 0 6px; font-size: 13px; color: #111827; }
+    .symp ul { margin: 0; padding-left: 18px; font-size: 12px; }
+
+    .note { margin: 16px 8px; background: #f9fafb; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 8px; font-size: 12px; }
+    .footer { text-align: center; color: #6b7280; font-size: 11px; margin: 18px 8px 0; }
+
+    .section-image { width: 100%; height: 130px; border-radius: 10px; background: url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="header">
+        <div class="logo"><img src="/assets/images/safe-lungs.png" alt="SafeLungs" /></div>
+        <div class="logo right"><img src="/assets/images/logo.png" alt="MSD" /></div>
+      </div>
+
+      <div class="banner">To download the PDF with your results, tap the three dots in the upper right corner and select "Open in external browser"</div>
+
+      <div class="summary">
+        <div>
+          <h2>This is a summary of your answers from the lung health symptom test</h2>
+          <p>You have answered yes to some questions and are experiencing symptoms that should be evaluated by a doctor.</p>
+        </div>
+        <div class="photo" aria-hidden="true"></div>
+      </div>
+
+      <h3 class="title">INFORMATION FOR YOUR DOCTOR</h3>
+      <div class="card">
+        <div class="section grid-2">
+          <ul class="info-list">
+            <li><strong>Age:</strong> {{AGE}}</li>
+            <li><strong>Gender:</strong> {{GENDER}}</li>
+            <li><strong>Smoker:</strong> {{SMOKER}}</li>
+            <li><strong>Caregiver or partner:</strong> {{CAREGIVER}}</li>
+          </ul>
+          <div style="display:flex;align-items:center;justify-content:center;">
+            <img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=health" width="100" height="100" style="border:1px solid #e5e7eb;border-radius:8px;"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="card symp">
+        <div class="section">
+          <h4>Symptoms from the test that the patient is experiencing and has therefore answered yes</h4>
+          <ul>
+            {{SYMPTOMS_YES}}
+          </ul>
+        </div>
+      </div>
+
+      <div class="card symp neg">
+        <div class="section">
+          <h4>Symptoms from the test that the patient is not experiencing and has therefore answered no</h4>
+          <ul>
+            {{SYMPTOMS_NO}}
+          </ul>
+        </div>
+      </div>
+
+      <div class="note">
+        We want to share information about common symptoms that may be related to a lung disease but remember that this is only to provide you with increased understanding. Only a doctor can ensure an accurate diagnosis. Please note that not all symptoms are serious, and some may resolve on their own, while others may need evaluation by a doctor.
+      </div>
+
+      <div class="section-image"></div>
+
+      <div class="footer">
+        Generated on {{GENERATED_AT}} · Confidential – For authorized use only
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

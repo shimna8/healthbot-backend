@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>تقرير تقييم صحة الرئة</title>
+  <style>
+    @page { size: A4; margin: 10mm; }
+    * { box-sizing: border-box; }
+    body { font-family: "Noto Naskh Arabic", "Amiri", "Arial", sans-serif; color: #1a1a1a; margin: 0; }
+    .page { width: 100%; }
+    .container { width: 100%; max-width: 794px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px; }
+    .logo { font-weight: 700; color: #0a7cc1; font-size: 18px; }
+    .logo.left { order: 2; }
+    .logo.right { color: #0b8f6a; order: 1; }
+    .banner { background: linear-gradient(90deg,#1aa47b,#2ec4b6); color: #fff; padding: 12px 16px; text-align: center; border-radius: 8px; margin: 6px 8px 16px; font-size: 13px; }
+    .summary { display: grid; grid-template-columns: 1fr 160px; gap: 16px; background: #f5faf8; margin: 0 8px 16px; border-radius: 8px; padding: 16px; }
+    .summary h2 { margin: 0 0 6px; color: #0a7cc1; font-size: 16px; }
+    .summary p { margin: 0; font-size: 12px; color: #444; }
+    .summary .photo { width: 160px; height: 120px; border-radius: 8px; background: url('https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=800&auto=format&fit=crop') center/cover no-repeat; }
+
+    h3.title { color: #0a7cc1; margin: 20px 8px 6px; font-size: 15px; }
+    .card { margin: 0 8px 14px; border: 1px solid #e6eef5; border-radius: 10px; overflow: hidden; }
+    .card .section { padding: 14px 16px; }
+    .muted { color: #6b7280; font-size: 12px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .info-list { list-style: none; padding: 0; margin: 0; font-size: 12px; }
+    .info-list li { padding: 6px 8px; border: 1px solid #e6eef5; border-radius: 6px; background: #f9fcff; }
+
+    .symp { border-right: 4px solid #22c55e; }
+    .symp.neg { border-right-color: #ef4444; }
+    .symp h4 { margin: 0 0 6px; font-size: 13px; color: #111827; }
+    .symp ul { margin: 0; padding-right: 18px; font-size: 12px; }
+
+    .note { margin: 16px 8px; background: #f9fafb; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 8px; font-size: 12px; }
+    .footer { text-align: center; color: #6b7280; font-size: 11px; margin: 18px 8px 0; }
+
+    .section-image { width: 100%; height: 130px; border-radius: 10px; background: url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="header">
+        <div class="logo right">MSD</div>
+        <div class="logo left">SafeLungs</div>
+      </div>
+
+      <div class="banner">لتنزيل ملف PDF بنتيجتك، اضغط على الثلاث نقاط في أعلى اليمين ثم اختر "الفتح في متصفح خارجي"</div>
+
+      <div class="summary">
+        <div>
+          <h2>هذا ملخص لإجاباتك في اختبار أعراض صحة الرئة</h2>
+          <p>لقد أجبت بنعم على بعض الأسئلة وتواجه أعراضًا يجب تقييمها من قبل الطبيب.</p>
+        </div>
+        <div class="photo" aria-hidden="true"></div>
+      </div>
+
+      <h3 class="title">معلومات للطبيب</h3>
+      <div class="card">
+        <div class="section grid-2">
+          <ul class="info-list">
+            <li><strong>العمر:</strong> {{AGE}}</li>
+            <li><strong>النوع:</strong> {{GENDER}}</li>
+            <li><strong>التدخين:</strong> {{SMOKER}}</li>
+            <li><strong>مقدم الرعاية/الشريك:</strong> {{CAREGIVER}}</li>
+          </ul>
+          <div style="display:flex;align-items:center;justify-content:center;">
+            <img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=health" width="100" height="100" style="border:1px solid #e5e7eb;border-radius:8px;"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="card symp">
+        <div class="section">
+          <h4>الأعراض التي يعاني منها المريض ولذلك أجاب بنعم</h4>
+          <ul>
+            {{SYMPTOMS_YES}}
+          </ul>
+        </div>
+      </div>
+
+      <div class="card symp neg">
+        <div class="section">
+          <h4>الأعراض التي لا يعاني منها المريض ولذلك أجاب بلا</h4>
+          <ul>
+            {{SYMPTOMS_NO}}
+          </ul>
+        </div>
+      </div>
+
+      <div class="note">
+        نود مشاركة معلومات حول الأعراض الشائعة التي قد ترتبط بأمراض الرئة، ولكن تذكر أن الهدف هو زيادة فهمك فقط. الطبيب وحده من يمكنه تأكيد التشخيص بدقة. ليست كل الأعراض خطيرة، فقد تزول من تلقاء نفسها، بينما يحتاج بعضها إلى تقييم طبي.
+      </div>
+
+      <div class="section-image"></div>
+
+      <div class="footer">
+        تم الإنشاء في {{GENERATED_AT}} · سري – للاستخدام المصرح به فقط
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

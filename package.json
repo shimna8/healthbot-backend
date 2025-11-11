@@ -24,7 +24,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "pdfkit": "^0.15.2"
+    "pdfkit": "^0.15.2",
+    "puppeteer": "^24.29.1"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeLungs Assessment - Custom Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a4d5e 0%, #2d5a6b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .main-content {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+        }
+
+        .main-content h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .main-content h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .main-content p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .start-button {
+            background: #00897b;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-button:hover {
+            background: #00796b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            color: #666;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-button:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-content {
+            padding: 40px;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            color: #1a4d5e;
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .modal-content p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1em;
+        }
+
+        .next-button {
+            background: #00897b;
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .next-button:hover {
+            background: #00796b;
+            transform: translateY(-2px);
+        }
+
+        .chat-container {
+            display: none;
+            flex: 1;
+            overflow: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        .chat-container.active {
+            display: block;
+        }
+
+        /* Hide the send box with an overlay */
+        .chat-container::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 50px;
+            background: white;
+            z-index: 1000;
+            pointer-events: all;
+        }
+
+        /* Custom Web Chat Styling */
+        #webchat {
+            height: 600px;
+            width: 100%;
+        }
+
+        /* Override Web Chat default styles */
+        #webchat .webchat__bubble__content {
+            border-radius: 15px !important;
+        }
+
+        #webchat .webchat__suggested-action__button {
+            background: #5ec5b6 !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 25px !important;
+            padding: 12px 30px !important;
+            font-size: 1em !important;
+            margin: 5px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        #webchat .webchat__suggested-action__button:hover {
+            background: #4db3a4 !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Hide the typing textbox and send button */
+        iframe {
+            pointer-events: auto;
+        }
+
+        /* For iframe - hide send box using CSS injection */
+        #healthbot-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        /* If using Web Chat SDK, hide send box */
+        #webchat .webchat__send-box {
+            display: none !important;
+        }
+
+        #webchat .webchat__send-box-text-box {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .main-content h1 {
+                font-size: 2em;
+            }
+
+            .modal-box {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+            }
+
+            #webchat {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <h1>Are Your Lungs Safe?</h1>
+        <h2>Let SafeLungs Help You Find Out</h2>
+        <p>
+            Take SafeLungs Assessment to understand your lung health better and get personalized recommendations.
+        </p>
+        <button class="start-button" onclick="openModal()">
+            Start SafeLungs Assessment
+        </button>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeOnOutsideClick(event)">
+        <div class="modal-box" id="modalBox">
+            <button class="close-button" onclick="closeModal()">×</button>
+
+            <div class="modal-content" id="welcomeContent">
+                <h2>Welcome to SafeLungs</h2>
+                <p>
+                    You are about to take your first important step in understanding your lung health. After
+                    answering my questions, you can save and print out your answers summary and bring it with
+                    you to your doctor's visit. This assessment can be completed for yourself or on behalf of
+                    someone you care about. We will begin the test when you are ready.
+                </p>
+                <button class="next-button" onclick="startChat()">Next</button>
+            </div>
+
+            <div class="chat-container" id="chatContainer">
+                <!-- 
+                    OPTION 1: Use iframe (current method - limited customization)
+                    The iframe styling is controlled by Azure Health Bot portal settings
+                -->
+                <iframe
+                    id="healthbot-iframe"
+                    style="width: 100%; height: 600px; border: none;"
+                    src="https://webchat.botframework.com/embed/lungbot-vxavep9?s=REDACTED&scenario=questionnaireflow001&locale=en-US&hideSendBox=true">
+                </iframe>
+
+                <!-- 
+                    OPTION 2: Use Web Chat SDK (full customization - requires Direct Line token)
+                    Uncomment below and comment out iframe to use this method
+                    
+                    <div id="webchat" role="main"></div>
+                    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+                    <script>
+                        // This requires implementing a token server for security
+                        // See implementation in the script section below
+                    </script>
+                -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('welcomeContent').style.display = 'block';
+            document.getElementById('chatContainer').classList.remove('active');
+            
+            const iframe = document.getElementById('healthbot-iframe');
+            iframe.src = iframe.src;
+        }
+
+        function startChat() {
+            document.getElementById('welcomeContent').style.display = 'none';
+            document.getElementById('chatContainer').classList.add('active');
+            
+            const iframe = document.getElementById('healthbot-iframe');
+            iframe.src = iframe.src;
+        }
+
+        function closeOnOutsideClick(event) {
+            if (event.target === document.getElementById('modalOverlay')) {
+                closeModal();
+            }
+        }
+
+        document.getElementById('modalBox').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        /* 
+         * OPTION 2: Web Chat SDK Implementation (Full Customization)
+         * 
+         * To use this, you need to:
+         * 1. Uncomment the <div id="webchat"> in HTML
+         * 2. Comment out the iframe
+         * 3. Implement a token server (for security - don't expose secret in client)
+         * 4. Uncomment the code below
+         * 
+        function startChatWithSDK() {
+            document.getElementById('welcomeContent').style.display = 'none';
+            document.getElementById('chatContainer').classList.add('active');
+            
+            // Fetch token from your server (recommended for production)
+            // fetch('/api/directline/token')
+            //     .then(res => res.json())
+            //     .then(data => initializeWebChat(data.token));
+            
+            // OR use secret directly (NOT recommended for production)
+            const secret = 'YOUR_SECRET_HERE';
+            
+            fetch('https://directline.botframework.com/v3/directline/conversations', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + secret
+                }
+            })
+            .then(response => response.json())
+            .then(conversation => {
+                window.WebChat.renderWebChat({
+                    directLine: window.WebChat.createDirectLine({
+                        token: conversation.token
+                    }),
+                    styleOptions: {
+                        // Custom styling options
+                        bubbleBackground: '#f0f0f0',
+                        bubbleFromUserBackground: '#5ec5b6',
+                        bubbleFromUserTextColor: 'white',
+                        bubbleBorderRadius: 15,
+                        bubbleFromUserBorderRadius: 15,
+                        
+                        // Suggested actions (buttons)
+                        suggestedActionBackground: '#5ec5b6',
+                        suggestedActionTextColor: 'white',
+                        suggestedActionBorderRadius: 25,
+                        suggestedActionBorderWidth: 0,
+                        
+                        // Send box
+                        sendBoxBackground: 'white',
+                        sendBoxButtonColor: '#5ec5b6',
+                        
+                        // Avatar
+                        botAvatarBackgroundColor: '#5ec5b6',
+                        userAvatarBackgroundColor: '#1a4d5e'
+                    },
+                    locale: 'en-US',
+                    userID: 'user-' + Date.now(),
+                    username: 'User'
+                }, document.getElementById('webchat'));
+                
+                // Send scenario trigger
+                // You can automatically send a message to trigger the scenario
+                // store.dispatch({
+                //     type: 'WEB_CHAT/SEND_MESSAGE',
+                //     payload: { text: '/scenario:questionnaireflow001' }
+                // });
+            });
+        }
+        */
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,33 @@
+# Exclude dev and local-only files from the Docker build context
+node_modules
+npm-debug.log*
+yarn-error.log
+pnpm-lock.yaml
+# Keep package-lock.json so `npm ci` is deterministic
+
+# VCS
+.git
+.gitignore
+
+# Env and secrets (use Azure App Settings instead)
+.env
+.env.*
+
+# Editors/OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Logs and coverage
+logs
+*.log
+coverage
+nyc_output
+
+# Build outputs / caches
+build
+dist
+.tmp
+tmp
+

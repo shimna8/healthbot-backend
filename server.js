@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import tokenRouter from './routes/token.js';
 import pdfRouter from './routes/pdf.js';
+import htmlPdfRouter from './routes/htmlPdf.js';
 
 // Load environment variables
 dotenv.config();
@@ -21,7 +22,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS Configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
+const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
   : ['http://localhost:3000'];
 
@@ -29,7 +30,7 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
+
     if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
       callback(null, true);
     } else {
@@ -54,16 +55,28 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Serve static files (CSS, JS, images, etc.)
+app.use(express.static(__dirname));
+
+// Serve static assets (logos, images, etc.)
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 // Serve static PDF files (for local storage mode)
 app.use('/pdfs', express.static(path.join(__dirname, 'pdfs')));
+
+// Landing page - serve index.html at root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // API Routes
 app.use('/api/token', tokenRouter);
 app.use('/api/pdf', pdfRouter);
+app.use('/api/html-pdf', htmlPdfRouter);
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'Not Found',
     message: `Route ${req.method} ${req.path} not found`
   });
@@ -73,7 +86,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error('[ERROR]', err.message);
   console.error(err.stack);
-  
+
   res.status(err.status || 500).json({
     error: err.message || 'Internal Server Error',
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
