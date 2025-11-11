@@ -19,20 +19,19 @@ async function main() {
       console.log(`[postinstall] Chrome already available at env path: ${envPath}. Skipping install.`);
       return;
     }
-    // 2) If Lambda-style Chromium is available, skip install
+    // 2) If @sparticuz/chromium is available, skip install
     try {
-      let chromium = null;
-      try { chromium = (await import('@sparticuz/chromium')).default; } catch {}
-      if (!chromium) { try { chromium = (await import('@sparticuz/chrome-aws-lambda')).default; } catch {} }
-      if (!chromium) { try { chromium = (await import('chrome-aws-lambda')).default; } catch {} }
+      const chromium = (await import('@sparticuz/chromium')).default;
       if (chromium) {
         const exec = await (typeof chromium.executablePath === 'function' ? chromium.executablePath() : chromium.executablePath);
         if (await fileExists(exec)) {
-          console.log(`[postinstall] Lambda-style Chromium present at: ${exec}. Skipping install.`);
+          console.log(`[postinstall] @sparticuz/chromium present at: ${exec}. Skipping install.`);
           return;
         }
       }
-    } catch (_) {}
+    } catch (_) {
+      console.log('[postinstall] @sparticuz/chromium not found, will check for system Chrome...');
+    }
 
 
     // 2) Try puppeteer's auto-detected path

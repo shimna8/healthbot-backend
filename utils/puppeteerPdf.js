@@ -50,26 +50,25 @@ function applyReplacements(html, lang, data) {
 
 async function getPuppeteer() {
   try {
-    const m = await import('puppeteer');
+    const m = await import('puppeteer-core');
     return m.default || m;
   } catch (e1) {
     try {
-      const m2 = await import('puppeteer-core');
+      const m2 = await import('puppeteer');
       return m2.default || m2;
     } catch (e2) {
-      throw new Error('Neither puppeteer nor puppeteer-core is installed. Please install one of them.');
+      throw new Error('Neither puppeteer-core nor puppeteer is installed. Please install one of them.');
     }
   }
 }
 async function getChromium() {
-  const candidates = ['@sparticuz/chromium', '@sparticuz/chrome-aws-lambda', 'chrome-aws-lambda'];
-  for (const name of candidates) {
-    try {
-      const m = await import(name);
-      return m.default || m;
-    } catch {}
+  try {
+    const m = await import('@sparticuz/chromium');
+    return m.default || m;
+  } catch (e) {
+    console.warn('[Puppeteer] @sparticuz/chromium not found:', e.message);
+    return null;
   }
-  return null;
 }
 
 
@@ -115,7 +114,7 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
 
   const puppeteer = await getPuppeteer();
 
-  // Prefer Lambda Chromium if available (@sparticuz/chrome-aws-lambda)
+  // Prefer @sparticuz/chromium if available (for AWS Lambda or serverless environments)
   const chromium = await getChromium();
   let launchOptions;
   if (chromium) {
@@ -125,19 +124,12 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
         ? chromium.executablePath()
         : chromium.executablePath);
 
-      // If not provided or missing on disk, try known direct bin paths
+      // If not provided or missing on disk, try known direct bin path
       if (!execPath || !(await pathExists(execPath))) {
         const cwd = process.cwd();
-        const directPaths = [
-          path.join(cwd, 'node_modules', '@sparticuz', 'chromium', 'bin', 'chromium'),
-          path.join(cwd, 'node_modules', '@sparticuz', 'chrome-aws-lambda', 'bin', 'chromium'),
-          path.join(cwd, 'node_modules', 'chrome-aws-lambda', 'bin', 'chromium'),
-        ];
-        for (const p of directPaths) {
-          if (await pathExists(p)) {
-            execPath = p;
-            break;
-          }
+        const directPath = path.join(cwd, 'node_modules', '@sparticuz', 'chromium', 'bin', 'chromium');
+        if (await pathExists(directPath)) {
+          execPath = directPath;
         }
       }
 
@@ -147,8 +139,6 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
           '/tmp/al2/lib',
           '/tmp/aws/lib',
           path.join(process.cwd(), 'node_modules', '@sparticuz', 'chromium', 'lib'),
-          path.join(process.cwd(), 'node_modules', '@sparticuz', 'chrome-aws-lambda', 'lib'),
-          path.join(process.cwd(), 'node_modules', 'chrome-aws-lambda', 'lib'),
           '/opt/lib',
         ];
         const existingLibPaths = [];
@@ -172,12 +162,12 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
           headless: chromium.headless ?? 'new',
           env: envForChrome,
         };
-        console.log(`[Puppeteer] Using Lambda-style Chromium at: ${execPath}`);
+        console.log(`[Puppeteer] Using @sparticuz/chromium at: ${execPath}`);
       } else {
-        console.warn('[Puppeteer] Lambda-style Chromium executablePath not found (including direct bin paths), falling back...');
+        console.warn('[Puppeteer] @sparticuz/chromium executablePath not found, falling back to system Chrome...');
       }
     } catch (e) {
-      console.warn(`[Puppeteer] Lambda-style Chromium error: ${e?.message || e}. Falling back...`);
+      console.warn(`[Puppeteer] @sparticuz/chromium error: ${e?.message || e}. Falling back...`);
     }
   }
 
