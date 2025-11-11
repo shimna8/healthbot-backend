@@ -142,11 +142,35 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
       }
 
       if (execPath && (await pathExists(execPath))) {
+        // Try to ensure required shared libraries are discoverable (e.g., NSS on some hosts)
+        const libCandidates = [
+          '/tmp/al2/lib',
+          '/tmp/aws/lib',
+          path.join(process.cwd(), 'node_modules', '@sparticuz', 'chromium', 'lib'),
+          path.join(process.cwd(), 'node_modules', '@sparticuz', 'chrome-aws-lambda', 'lib'),
+          path.join(process.cwd(), 'node_modules', 'chrome-aws-lambda', 'lib'),
+          '/opt/lib',
+        ];
+        const existingLibPaths = [];
+        for (const d of libCandidates) {
+          try {
+            const st = await fs.stat(d);
+            if (st && st.isDirectory()) existingLibPaths.push(d);
+          } catch {}
+        }
+        const envForChrome = { ...process.env };
+        if (existingLibPaths.length) {
+          const uniq = Array.from(new Set(existingLibPaths));
+          envForChrome.LD_LIBRARY_PATH = `${uniq.join(':')}${process.env.LD_LIBRARY_PATH ? ':' + process.env.LD_LIBRARY_PATH : ''}`;
+          console.log(`[Puppeteer] LD_LIBRARY_PATH set for Chromium: ${envForChrome.LD_LIBRARY_PATH}`);
+        }
+
         launchOptions = {
           args: [...(chromium.args || []), `--lang=${lang === 'ar' ? 'ar' : 'en-US'}`],
           defaultViewport: chromium.defaultViewport,
           executablePath: execPath,
           headless: chromium.headless ?? 'new',
+          env: envForChrome,
         };
         console.log(`[Puppeteer] Using Lambda-style Chromium at: ${execPath}`);
       } else {
