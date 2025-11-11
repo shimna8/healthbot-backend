@@ -61,6 +61,17 @@ async function getPuppeteer() {
     }
   }
 }
+async function getChromium() {
+  const candidates = ['@sparticuz/chrome-aws-lambda', 'chrome-aws-lambda'];
+  for (const name of candidates) {
+    try {
+      const m = await import(name);
+      return m.default || m;
+    } catch {}
+  }
+  return null;
+}
+
 
 async function pathExists(p) {
   try {
@@ -104,42 +115,66 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
 
   const puppeteer = await getPuppeteer();
 
-  // Resolve executable path in this order:
-  // 1) Explicit env var
-  // 2) Common system locations
-  // 3) Puppeteer-managed browser cache (if installed via `npx puppeteer browsers install chrome`)
-  let resolvedExecutablePath = process.env.PUPPETEER_EXECUTABLE_PATH || null;
-  // If env var is set but path does not exist, ignore it and fall back
-  if (resolvedExecutablePath && !(await pathExists(resolvedExecutablePath))) {
-    console.warn(`[Puppeteer] Ignoring missing PUPPETEER_EXECUTABLE_PATH: ${resolvedExecutablePath}`);
-    resolvedExecutablePath = null;
-  }
-  if (!resolvedExecutablePath) {
-    resolvedExecutablePath = await findSystemChrome();
-  }
-  if (!resolvedExecutablePath && typeof puppeteer.executablePath === 'function') {
+  // Prefer Lambda Chromium if available (@sparticuz/chrome-aws-lambda)
+  const chromium = await getChromium();
+  let launchOptions;
+  if (chromium) {
     try {
-      const autoPath = puppeteer.executablePath();
-      if (autoPath && (await pathExists(autoPath))) {
-        resolvedExecutablePath = autoPath;
-      } else if (autoPath) {
-        console.warn(`[Puppeteer] Auto-detected path does not exist: ${autoPath}`);
+      const execPath = await chromium.executablePath;
+      if (execPath && (await pathExists(execPath))) {
+        launchOptions = {
+          args: [...chromium.args, `--lang=${lang === 'ar' ? 'ar' : 'en-US'}`],
+          defaultViewport: chromium.defaultViewport,
+          executablePath: execPath,
+          headless: chromium.headless,
+        };
+        console.log(`[Puppeteer] Using @sparticuz/chrome-aws-lambda at: ${execPath}`);
+      } else {
+        console.warn('[Puppeteer] chrome-aws-lambda executablePath not found, falling back...');
       }
-    } catch {}
+    } catch (e) {
+      console.warn(`[Puppeteer] chrome-aws-lambda error: ${e?.message || e}. Falling back...`);
+    }
   }
 
-  console.log(`[Puppeteer] Using executablePath: ${resolvedExecutablePath || 'auto (bundled/managed)'}`);
+  if (!launchOptions) {
+    // Resolve executable path in this order:
+    // 1) Explicit env var
+    // 2) Common system locations
+    // 3) Puppeteer-managed browser cache (if installed via `npx puppeteer browsers install chrome`)
+    let resolvedExecutablePath = process.env.PUPPETEER_EXECUTABLE_PATH || null;
+    // If env var is set but path does not exist, ignore it and fall back
+    if (resolvedExecutablePath && !(await pathExists(resolvedExecutablePath))) {
+      console.warn(`[Puppeteer] Ignoring missing PUPPETEER_EXECUTABLE_PATH: ${resolvedExecutablePath}`);
+      resolvedExecutablePath = null;
+    }
+    if (!resolvedExecutablePath) {
+      resolvedExecutablePath = await findSystemChrome();
+    }
+    if (!resolvedExecutablePath && typeof puppeteer.executablePath === 'function') {
+      try {
+        const autoPath = puppeteer.executablePath();
+        if (autoPath && (await pathExists(autoPath))) {
+          resolvedExecutablePath = autoPath;
+        } else if (autoPath) {
+          console.warn(`[Puppeteer] Auto-detected path does not exist: ${autoPath}`);
+        }
+      } catch {}
+    }
 
-  const launchOptions = {
-    headless: 'new',
-    ...(resolvedExecutablePath ? { executablePath: resolvedExecutablePath } : {}),
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--font-render-hinting=medium',
-      `--lang=${lang === 'ar' ? 'ar' : 'en-US'}`,
-    ],
-  };
+    console.log(`[Puppeteer] Using executablePath: ${resolvedExecutablePath || 'auto (bundled/managed)'}`);
+
+    launchOptions = {
+      headless: 'new',
+      ...(resolvedExecutablePath ? { executablePath: resolvedExecutablePath } : {}),
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--font-render-hinting=medium',
+        `--lang=${lang === 'ar' ? 'ar' : 'en-US'}`,
+      ],
+    };
+  }
 
   let browser;
   try {
