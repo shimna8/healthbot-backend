@@ -109,14 +109,26 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
   // 2) Common system locations
   // 3) Puppeteer-managed browser cache (if installed via `npx puppeteer browsers install chrome`)
   let resolvedExecutablePath = process.env.PUPPETEER_EXECUTABLE_PATH || null;
+  // If env var is set but path does not exist, ignore it and fall back
+  if (resolvedExecutablePath && !(await pathExists(resolvedExecutablePath))) {
+    console.warn(`[Puppeteer] Ignoring missing PUPPETEER_EXECUTABLE_PATH: ${resolvedExecutablePath}`);
+    resolvedExecutablePath = null;
+  }
   if (!resolvedExecutablePath) {
     resolvedExecutablePath = await findSystemChrome();
   }
   if (!resolvedExecutablePath && typeof puppeteer.executablePath === 'function') {
     try {
-      resolvedExecutablePath = puppeteer.executablePath();
+      const autoPath = puppeteer.executablePath();
+      if (autoPath && (await pathExists(autoPath))) {
+        resolvedExecutablePath = autoPath;
+      } else if (autoPath) {
+        console.warn(`[Puppeteer] Auto-detected path does not exist: ${autoPath}`);
+      }
     } catch {}
   }
+
+  console.log(`[Puppeteer] Using executablePath: ${resolvedExecutablePath || 'auto (bundled/managed)'}`);
 
   const launchOptions = {
     headless: 'new',
