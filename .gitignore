@@ -7,6 +7,11 @@ yarn.lock
 .env
 .env.local
 
+# SSH Keys and certificates
+*.pem
+*.key
+*.crt
+
 # Logs
 logs/
 *.log

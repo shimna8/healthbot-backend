@@ -32,7 +32,12 @@ async function loadTemplate(lang) {
 }
 
 function applyReplacements(html, lang, data) {
+  // Determine base URL for assets (logo, images, etc.)
+  // Priority: 1) Explicit data.baseUrl, 2) Environment variable, 3) Default localhost
+  const baseUrl = data.baseUrl || process.env.BASE_URL || 'http://localhost:3000';
+
   const tokens = {
+    '{{BASE_URL}}': baseUrl,
     '{{AGE}}': data.age ?? '-',
     '{{GENDER}}': data.gender ?? '-',
     '{{SMOKER}}': data.smoker ?? '-',
