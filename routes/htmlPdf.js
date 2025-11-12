@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
 
 // Health endpoint for this route
 router.get('/health', (req, res) => {
-  res.json({ status: 'healthy', endpoint: '/api/html-pdf', timestamp: new Date().toISOString() });
+  res.json({ status: 'healthy', endpoint: '/api/htmlpdf', timestamp: new Date().toISOString() });
 });
 
 export default router;

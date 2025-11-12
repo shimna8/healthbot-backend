@@ -72,7 +72,7 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/token', tokenRouter);
 app.use('/api/pdf', pdfRouter);
-app.use('/api/html-pdf', htmlPdfRouter);
+app.use('/api/htmlpdf', htmlPdfRouter);
 
 // 404 handler
 app.use((req, res) => {
