@@ -1,5 +1,5 @@
-# Base image: Node 18 on Debian bookworm (Chromium available via apt)
-FROM node:18-bookworm-slim
+# Base image: Node 20 on Debian bookworm (Chromium available via apt)
+FROM node:20-bookworm-slim
 
 # Install Chromium and fonts (Arabic support via Noto)
 RUN apt-get update \
@@ -12,11 +12,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Environment
-# - Skip Puppeteer downloading its own Chromium (we'll use the system one)
-# - Provide the executable path for Puppeteer (safe even if Puppeteer isn't used yet)
+# - Skip Puppeteer downloading its own Chromium (we use @sparticuz/chromium)
 ENV NODE_ENV=production \
-    PUPPETEER_SKIP_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+    PUPPETEER_SKIP_DOWNLOAD=true
 
 # App setup
 WORKDIR /app
