@@ -1,107 +1,465 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Health Assessment Report</title>
-  <style>
-    @page { size: A4; margin: 10mm; }
-    * { box-sizing: border-box; }
-    body { font-family: "Noto Sans", Arial, Helvetica, sans-serif; color: #1a1a1a; margin: 0; }
-    .page { width: 100%; }
-    .container { width: 100%; max-width: 794px; margin: 0 auto; }
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px; }
-    .logo { font-weight: 700; color: #0a7cc1; font-size: 18px; }
-    .logo.right { color: #0b8f6a; }
-    .logo img { height: 28px; display: block; }
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    .banner { background: linear-gradient(90deg,#1aa47b,#2ec4b6); color: #fff; padding: 12px 16px; text-align: center; border-radius: 8px; margin: 6px 8px 16px; font-size: 13px; }
-    .summary { display: grid; grid-template-columns: 1fr 160px; gap: 16px; background: #f5faf8; margin: 0 8px 16px; border-radius: 8px; padding: 16px; }
-    .summary h2 { margin: 0 0 6px; color: #0a7cc1; font-size: 16px; }
-    .summary p { margin: 0; font-size: 12px; color: #444; }
-    .summary .photo { width: 160px; height: 120px; border-radius: 8px; background: url('https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=800&auto=format&fit=crop') center/cover no-repeat; }
-
-    h3.title { color: #0a7cc1; margin: 20px 8px 6px; font-size: 15px; }
-    .card { margin: 0 8px 14px; border: 1px solid #e6eef5; border-radius: 10px; overflow: hidden; }
-    .card .section { padding: 14px 16px; }
-    .muted { color: #6b7280; font-size: 12px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .info-list { list-style: none; padding: 0; margin: 0; font-size: 12px; }
-    .info-list li { padding: 6px 8px; border: 1px solid #e6eef5; border-radius: 6px; background: #f9fcff; }
-
-    .symp { border-left: 4px solid #22c55e; }
-    .symp.neg { border-left-color: #ef4444; }
-    .symp h4 { margin: 0 0 6px; font-size: 13px; color: #111827; }
-    .symp ul { margin: 0; padding-left: 18px; font-size: 12px; }
-
-    .note { margin: 16px 8px; background: #f9fafb; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 8px; font-size: 12px; }
-    .footer { text-align: center; color: #6b7280; font-size: 11px; margin: 18px 8px 0; }
-
-    .section-image { width: 100%; height: 130px; border-radius: 10px; background: url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat; }
-  </style>
+    <!-- css -->
+    <!-- <link rel="stylesheet" href="./assets/style-libraries/style.css"> -->
+    <title>PDF</title>
 </head>
+
+
+<style>
+    .pdf_container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0px 15px;
+    }
+
+    .header_pdf_inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header_pdf {
+        background: white;
+        padding: 20px 0px;
+    }
+
+    .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .logo-section img {
+        max-width: 255px;
+    }
+
+    .lung-icon {
+        width: 40px;
+        height: 40px;
+        fill: #2c7a7b;
+    }
+
+    .logo-text {
+        font-size: 20px;
+        font-weight: bold;
+        color: #2c7a7b;
+    }
+
+    .msd-logo {
+        max-width: 166px;
+    }
+
+    .banner_pdf {
+        background: -webkit-linear-gradient(358deg, #26B372 0%, #377FB8 100%);
+        color: white;
+        padding: 50px 0px;
+        text-align: center;
+        font-style: italic;
+    }
+
+    .banner_pdf p {
+        color: #fff;
+        font-size: 30px;
+        max-width: 890px;
+        margin: 0 auto;
+    }
+
+    .intro-section {
+        background: #f0f9f8;
+        padding: 30px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .pdf_flex {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+    }
+
+    .dr_left {
+        width: 675px;
+        padding: 20px 0px;
+    }
+
+    .dr_right {
+        width: 500px;
+    }
+
+    .dr_section .pdf_flex {
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dr_section {
+        background-color: #DBF5ED;
+        overflow: hidden;
+    }
+
+    .dr_right {
+        margin-right: -150px;
+    }
+
+    .dr_left p {
+        font-size: 25px;
+        padding: 20px 10px 20px 0px;
+        font-family: Invention_bold;
+    }
+
+    .pdf_gradient {
+        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .info_col_l {
+        width: 83%;
+    }
+
+    .info_col_r {
+        width: 15%;
+    }
+
+    .info_col_l h2 {
+        font-size: 35px;
+        margin-bottom: 4px;
+    }
+
+    .information_box,
+    .information_box_1 {
+        background-color: #fff;
+        padding: 50px 0px 30px 0px;
+    }
+
+    .list_pdf {
+        list-style-type: none;
+        padding: 0px;
+        margin: 15px 0px 0px 0px;
+    }
+
+    .list_pdf li {
+        font-size: 16px;
+        margin-bottom: 7px;
+    }
+
+    .list_pdf strong {
+        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding: 7px 0px;
+        font-size: 18px;
+    }
+
+    .safe_barcode {
+        background: #fff;
+        position: relative;
+        border-radius: 15px;
+        border: 1px solid #377FB8;
+        padding: 20px 30px;
+        text-align: center;
+    }
+
+    .info_row {
+        justify-content: space-between;
+    }
+
+    .safe_barcode p {
+        line-height: 19px;
+        font-size: 16px;
+    }
+
+    .margin_b30 {
+        margin-bottom: 30px;
+    }
+
+    .symptoms-list {
+        list-style-type: none;
+    }
+
+    .symptoms-list li {
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 10px;
+    }
+
+    .symptoms-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 10px;
+        height: 10px;
+        background-color: #00857B;
+        /* teal/green bullet */
+        border-radius: 50%;
+    }
+
+    .info_row h4 {
+        max-width: 880px;
+        font-size: 25px;
+        margin-bottom: 10px;
+    }
+
+    .information_box_1 h4 {
+        max-width: 880px;
+        font-size: 25px;
+        margin-bottom: 5px;
+        margin-top: 30px;
+        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .info_row p,
+    .information_box_1 p {
+        font-size: 16px;
+    }
+
+    .mt-20 {
+        margin-top: 20px;
+    }
+
+    .footer_barcode {
+        border-top: 30px solid #DBF5ED;
+        padding: 100px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: -webkit-linear-gradient(358deg, #26B372 0%, #377FB8 100%);
+    }
+
+    .copy_right_pdf {
+        background-color: #fff;
+        padding: 25px 0px;
+    }
+
+    .footer_barcode img {
+        width: 206px;
+    }
+</style>
+</head>
+
 <body>
-  <div class="page">
-    <div class="container">
-      <div class="header">
-        <div class="logo"><img src="{{BASE_URL}}/assets/images/safe-lungs.png" alt="SafeLungs" /></div>
-        <div class="logo right"><img src="{{BASE_URL}}/assets/images/logo.png" alt="MSD" /></div>
-      </div>
-
-      <div class="banner">To download the PDF with your results, tap the three dots in the upper right corner and select "Open in external browser"</div>
-
-      <div class="summary">
-        <div>
-          <h2>This is a summary of your answers from the lung health symptom test</h2>
-          <p>You have answered yes to some questions and are experiencing symptoms that should be evaluated by a doctor.</p>
+    <div class="header_pdf">
+        <div class="pdf_container">
+            <div class="header_pdf_inner">
+                <div class="logo-section">
+                    <img src="{{BASE_URL}}/assets/images/pdf_lungs.png" alt="img">
+                </div>
+                <img class="msd-logo" src="{{BASE_URL}}/assets/images/pdf_msd.png" alt="img">
+            </div>
         </div>
-        <div class="photo" aria-hidden="true"></div>
-      </div>
-
-      <h3 class="title">INFORMATION FOR YOUR DOCTOR</h3>
-      <div class="card">
-        <div class="section grid-2">
-          <ul class="info-list">
-            <li><strong>Age:</strong> {{AGE}}</li>
-            <li><strong>Gender:</strong> {{GENDER}}</li>
-            <li><strong>Smoker:</strong> {{SMOKER}}</li>
-            <li><strong>Caregiver or partner:</strong> {{CAREGIVER}}</li>
-          </ul>
-          <div style="display:flex;align-items:center;justify-content:center;">
-            <img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=health" width="100" height="100" style="border:1px solid #e5e7eb;border-radius:8px;"/>
-          </div>
-        </div>
-      </div>
-
-      <div class="card symp">
-        <div class="section">
-          <h4>Symptoms from the test that the patient is experiencing and has therefore answered yes</h4>
-          <ul>
-            {{SYMPTOMS_YES}}
-          </ul>
-        </div>
-      </div>
-
-      <div class="card symp neg">
-        <div class="section">
-          <h4>Symptoms from the test that the patient is not experiencing and has therefore answered no</h4>
-          <ul>
-            {{SYMPTOMS_NO}}
-          </ul>
-        </div>
-      </div>
-
-      <div class="note">
-        We want to share information about common symptoms that may be related to a lung disease but remember that this is only to provide you with increased understanding. Only a doctor can ensure an accurate diagnosis. Please note that not all symptoms are serious, and some may resolve on their own, while others may need evaluation by a doctor.
-      </div>
-
-      <div class="section-image"></div>
-
-      <div class="footer">
-        Generated on {{GENERATED_AT}} · Confidential – For authorized use only
-      </div>
     </div>
-  </div>
-</body>
-</html>
 
+    <div class="banner_pdf">
+        <div class="pdf_container">
+            <p>
+                To download the PDF with your results, tap the three dots in the upper right corner and select 'Open in
+                external browser’
+            </p>
+        </div>
+    </div>
+
+    <div class="dr_section">
+        <div class="pdf_container">
+            <div class="pdf_flex">
+                <div class="dr_left">
+                    <p class="pdf_gradient">This is a summary of your answers from the lung health symptom test. You
+                        have answered yes to
+                        some questions and are experiencing symptoms that should be evaluated by a doctor.</p>
+                </div>
+                <div class="dr_right">
+                    <img src="{{BASE_URL}}/assets/images/dr_image_1.png" alt="img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="information_box">
+        <div class="pdf_container">
+            <div class="info_row pdf_flex margin_b30">
+                <div class="info_col_l">
+                    <h2 class="pdf_gradient">INFORMATION FOR YOUR DOCTOR</h2>
+                    <p>Your patient has completed the lung health symptom test on lunghälsan.se and has answered
+                        questions regarding any perceived symptoms related to their lung health. The test consists of
+                        questions about lung symptoms where the patient can answer either yes or no, as well as
+                        questions about the patient's age and tobacco habits. The purpose of this test is to increase
+                        awareness among adults about lung diseases, including lung cancer, and to encourage patients to
+                        seek medical care for their reported symptoms for early diagnosis. Below is a summary of how
+                        your patient has answered.</p>
+
+                    <ul class="list_pdf">
+                        <li>
+                            <strong>Age: </strong> 60-74 years old
+                        </li>
+                        <li>
+                            <strong>Smoking: </strong> Quite 15 years ago or less
+                        </li>
+                        <li>
+                            <strong>Number of years as a smoker:</strong> 20
+                        </li>
+                        <li>
+                            <strong>Cigaretter per dag: </strong> 10
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="info_col_r">
+                    <div class="safe_barcode">
+                        <img src="{{BASE_URL}}/assets/images/safe_barcode.png" alt="img">
+                        <p class="pdf_gradient">SafeLungs homepage</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info_row margin_b30">
+                <h4 class="pdf_gradient">Symptoms from the test that the patient is experiencing and has therefore
+                    answered
+                    yes to:</h4>
+
+                <ul class="symptoms-list">
+                    <li>Unexplained wheezing</li>
+                    <li>Hoarseness lasting more than 3 weeks </li>
+                    <li>Swollen lymph nodes, such as in the neck, without ongoing infection </li>
+                    <li>Repeated or persistent chest infections, such as pneumonia</li>
+                    <li>Chest or shoulder pain without explanation </li>
+                    <li>Fatigue or weakness without explanation </li>
+                    <li>Weight loss or decreased appetite without explanation </li>
+                    <li>Increase in the number of contacts with healthcare recently </li>
+                    <li>Respiratory symptoms such as coughing, shortness of breath, or wheezing </li>
+                    <li>Cough lasting less than 4 weeks</li>
+                    <li>Coughing up blood </li>
+                    <li>Unexplained shortness of breath lasting more than 6 weeks</li>
+                </ul>
+            </div>
+            <div class="info_row margin_b30">
+                <h4 class="pdf_gradient">Symptoms from the test that the patient is not experiencing and has therefore
+                    answered no to:</h4>
+                <ul class="symptoms-list">
+                    <li>None</li>
+                </ul>
+            </div>
+            <div class="info_row margin_b30">
+                <p>The questionnaire is not a diagnostic tool nor does it provide any other form of healthcare advice,
+                    and therefore does not replace contact with healthcare professionals or a physician's assessment.
+                    Its purpose is to increase awareness among adults about lung diseases, including lung cancer, and to
+                    help those who have completed the questionnaire to understand, on a general basis, the possible next
+                    steps that are available.</p>
+
+                <p class="mt-20"><i>The questionnaire is developed by MSD and validated by Georgios Tsakonas, Licensed
+                        physician,
+                        PhD, Chief Physician in Oncology.</i></p>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="dr_section">
+        <div class="pdf_container">
+            <div class="pdf_flex">
+                <div class="dr_left">
+                    <p class="pdf_gradient">We want to share information about common symptoms that may be related to a
+                        lung disease but remember that this is only to provide you with increased understanding. Only a
+                        doctor can make an accurate diagnosis. Please note that not all symptoms are serious, and some
+                        may resolve on their own, while others may need evaluation by a doctor.</p>
+                </div>
+                <div class="dr_right">
+                    <img src="{{BASE_URL}}/assets/images/dr_image_2.png" alt="img">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- done -->
+    <div class="information_box_1">
+        <div class="pdf_container">
+
+            <h4>Cough</h4>
+            <p>Coughing is a way for the airways to try to get rid of things that irritate them. Most often, the cough
+                is due to a cold and then it goes away by itself, although it can take several weeks. Coughing can also
+                be caused by other diseases of the airways or lungs, or by irritants such as smoke. Coughing up blood
+                should always be evaluated by a doctor. An infection is often the cause, but other conditions should be
+                ruled out.</p>
+
+            <h4>Shortness of breath</h4>
+            <p>Shortness of breath may not be anything to worry about, but sometimes it can be serious and require
+                medical help. Common causes include asthma, respiratory tract infections like pneumonia, obesity, and
+                smoking. It can also be a sign of a panic attack. However, in some cases, it may indicate something more
+                serious, such as a lung condition called chronic obstructive pulmonary disease (COPD) or lung cancer.
+            </p>
+
+            <h4>Wheezing</h4>
+            <p>Wheezing is the sound you hear when your airway is partially blocked. This blockage can result from
+                various conditions such as allergic reactions, colds, bronchitis, or allergies. Additionally, wheezing
+                can be a symptom of asthma, pneumonia, heart failure, and other conditions. It may resolve on its own,
+                but it can also indicate a serious underlying condition.</p>
+
+            <h4>Hoarseness</h4>
+            <p>When you're hoarse, your voice doesn't sound as it normally does. It's common to experience hoarseness
+                with a cold, but it can also result from overstraining your voice. In most cases, the problem resolves
+                on its own.</p>
+
+            <h4>Swollen lymph nodes</h4>
+            <p>Swollen lymph nodes are common. They might feel tender and bigger than usual. This happens when your
+                immune system activates to defend your body against viruses and bacteria. It is recommended to have
+                swollen lymph nodes evaluated by a doctor if they accompany an infected wound, if they are larger than
+                1.5 centimeters in size without ongoing severe throat infection, if they feel firm or fixed, or if you
+                have swollen lymph nodes in multiple areas of your body along with symptoms such as pallor, fatigue or
+                fever.</p>
+
+            <h4>Repeated or persistent chest infections</h4>
+            <p>Respiratory infections, such as bronchitis and pneumonia, affect your airways and lungs. Pneumonia is
+                typically caused by bacteria, which is treated with antibiotics. If you experience frequent episodes of
+                these infections, it could indicate an underlying health issue.</p>
+
+            <h4>Chest or shoulder pain</h4>
+            <p>Chest and shoulder pain can have various causes. It can for example be due to gallstones, angina pectoris
+                or other heart diseases. It also may result from inflammation of the pericardium (pericarditis), the
+                pleura (pleuritis) or the pancreas (pancreatitis). If you're experiencing unexplained pain in your chest
+                or shoulder that persists, it's important to visit your doctor for evaluation.</p>
+
+            <h4>Chest or shoulder pain</h4>
+            <p>Chest and shoulder pain can have various causes. It can for example be due to gallstones, angina pectoris
+                or other heart diseases. It also may result from inflammation of the pericardium (pericarditis), the
+                pleura (pleuritis) or the pancreas (pancreatitis). If you're experiencing unexplained pain in your chest
+                or shoulder that persists, it's important to visit your doctor for evaluation.</p>
+
+            <h4>Chest or shoulder pain</h4>
+            <p>Chest and shoulder pain can have various causes. It can for example be due to gallstones, angina pectoris
+                or other heart diseases. It also may result from inflammation of the pericardium (pericarditis), the
+                pleura (pleuritis) or the pancreas (pancreatitis). If you're experiencing unexplained pain in your chest
+                or shoulder that persists, it's important to visit your doctor for evaluation.</p>
+        </div>
+    </div>
+
+    <div class="footer_barcode">
+        <img src="{{BASE_URL}}/assets/images/footer_barcode.png" alt="img">
+    </div>
+    <div class="copy_right_pdf">
+        <div class="pdf_container">
+            Copyright © 2025 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved. Medical Code.
+            In case you need any update or you have an inquiry or need to report an adverse reaction, you can contact
+            Tel: +9714 4269100 Fax: +9714 4269204 Email: DPOC.GULF@MSD.COM <br>
+            This website is intended for UAE residents. Expiry Date: 31/11/2027
+        </div>
+    </div>
+
+
+
+
+
+
+</body>
+
+</html>
