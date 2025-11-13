@@ -34,7 +34,7 @@ async function loadTemplate(lang) {
 function applyReplacements(html, lang, data) {
   // Determine base URL for assets (logo, images, etc.)
   // Priority: 1) Explicit data.baseUrl, 2) Environment variable, 3) Default localhost
-  const baseUrl = data.baseUrl || process.env.BASE_URL || 'http://localhost:3000';
+  const baseUrl = data?.baseUrl || process.env.BASE_URL || 'http://localhost:3000';
 
   // Determine font path for embedded fonts in PDF
   // Use absolute file path to the project root for file:// URLs
@@ -59,17 +59,25 @@ function applyReplacements(html, lang, data) {
   return out;
 }
 
-function generateBooleanLists(report) {
+function generateBooleanLists(reportArray, questionsDict) {
   const trueItems = [];
   const falseItems = [];
 
-  report.forEach(item => {
-    if (item.type === "boolean") {
-      const li = `<li>${item.question}</li>`;
+  // Ensure input is an array
+  if (!Array.isArray(reportArray)) return { trueList: "", falseList: "" };
+
+  reportArray.forEach((item) => {
+    if (item.type === "boolean" && typeof item.value === "boolean") {
+      let questionText;
+
       if (item.value === true) {
-        trueItems.push(li);
-      } else if (item.value === false) {
-        falseItems.push(li);
+        // Use positive if exists, else fallback
+        questionText = item.positive || questionsDict?.[item.key] || item.question || item.key;
+        trueItems.push(`<li>${questionText}</li>`);
+      } else {
+        // Use negative if exists, else fallback
+        questionText = item.negative || questionsDict?.[item.key] || item.question || item.key;
+        falseItems.push(`<li>${questionText}</li>`);
       }
     }
   });
@@ -80,22 +88,39 @@ function generateBooleanLists(report) {
   };
 }
 
-function getValueByKey(report, searchKey) {
-  const item = report.find(entry => entry.key === searchKey);
+
+
+function getValueByKey(reportDict, searchKey) {
+ 
+  // Check if reportDict is an array
+  if (!Array.isArray(reportDict)) return null;
+
+  // Find the object with matching key
+  const item = reportDict.find(obj => obj.key === searchKey);
   if (!item) return null;
 
-  // Handle both object and stringified JSON cases
+  // If no value property exists
+  if (item.value === undefined) return null;
+
+  // Handle nested value object
+  if (typeof item.value === "object" && item.value !== null && "value" in item.value) {
+    return item.value.value;
+  }
+
+  // Handle string (could be JSON)
   if (typeof item.value === "string") {
     try {
       const parsed = JSON.parse(item.value);
-      return parsed.value || null;
+      return parsed.value || item.value;
     } catch {
-      return item.value; // not JSON, return as-is
+      return item.value;
     }
   }
 
-  return item.value?.value || null;
+  // Fallback for boolean or other primitive types
+  return item.value;
 }
+
 
 async function getPuppeteer() {
   try {
@@ -290,18 +315,38 @@ export async function renderReportPdf(lang = 'en', data = {}, pdfOptions = {}) {
 
 export function getDefaultReportData() {
   return {
-    age: 62,
-    gender: 'Male',
-    smoker: 'Non-smoker',
-    caregiver: 'Daughter: 20',
-    symptomsYes: [
-      'Worsening cough',
-      'Night sweats',
-      'Cough lasting longer than 2 weeks',
-      'Chest pain when breathing',
-      'Shortness of breath',
-    ],
-    symptomsNo: [],
+    report: [
+      // {
+      //   question: "How old are you?",
+      //   key: "howOld",
+      //   type: "string",
+      //   value: "--"
+      // },
+      // {
+      //   question: "Smoking duration",
+      //   key: "smokeYears",
+      //   type: "string",
+      //   value: "Male"
+      // },
+      // {
+      //   question: "Pack years",
+      //   key: "packYears",
+      //   type: "string",
+      //   value: "Non-smoker"
+      // },
+      // {
+      //   question: "Positive responses",
+      //   key: "trueList",
+      //   type: "string",
+      //   value: "<li>None</li>"
+      // },
+      // {
+      //   question: "Negative responses",
+      //   key: "falseList",
+      //   type: "string",
+      //   value: "<li>None</li>"
+      // }
+    ]
   };
 }
 
