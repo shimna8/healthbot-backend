@@ -77,7 +77,7 @@
 
     a,
     p {
-        font-size: 16px;
+        font-size: 14px;
         margin: 0;
         font-family: Invention_Rg, Arial, sans-serif;
     }
@@ -87,8 +87,15 @@
         text-decoration: none;
     }
 
+    strong,
+    b {
+        text-decoration: none;
+    }
+
     img {
         width: 100%;
+        max-width: 100%;
+        height: auto;
     }
 
     /* ============ Utility Classes ============ */
@@ -160,7 +167,7 @@
 
     .banner_pdf p {
         color: #fff;
-        font-size: 30px;
+        font-size: 20px;
         max-width: 890px;
         margin: 0 auto;
     }
@@ -182,30 +189,34 @@
     }
 
     .dr_left {
-        width: 675px;
+        width: 60%;
         padding: 20px 0px;
     }
 
     .dr_right {
-        width: 500px;
+        width: 35%;
+        max-width: 300px;
     }
 
     .dr_section .pdf_flex {
         justify-content: space-between;
         align-items: center;
+        gap: 15px;
     }
 
     .dr_section {
         background-color: #DBF5ED;
-        overflow: hidden;
+        overflow: visible;
     }
 
-    .dr_right {
-        margin-right: -150px;
+    .dr_right img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
     }
 
     .dr_left p {
-        font-size: 25px;
+        font-size: 18px;
         padding: 20px 10px 20px 0px;
         font-family: Invention_bold;
     }
@@ -228,7 +239,7 @@
     }
 
     .info_col_l h2 {
-        font-size: 35px;
+        font-size: 24px;
         margin-bottom: 4px;
     }
 
@@ -403,16 +414,16 @@
 
                     <ul class="list_pdf">
                         <li>
-                            <strong>Age: </strong> 60-74 years old
+                            <strong>Age: </strong> {{howOld}}
                         </li>
                         <li>
-                            <strong>Smoking: </strong> Quite 15 years ago or less
+                            <strong>Smoking: </strong> {{smokeYears}}
                         </li>
                         <li>
-                            <strong>Number of years as a smoker:</strong> 20
+                            <strong>Number of years as a smoker:</strong> {{packYears}}
                         </li>
                         <li>
-                            <strong>Cigaretter per dag: </strong> 10
+                            <strong>Cigaretter per dag: </strong> --
                         </li>
                     </ul>
 
@@ -431,25 +442,14 @@
                     yes to:</h4>
 
                 <ul class="symptoms-list">
-                    <li>Unexplained wheezing</li>
-                    <li>Hoarseness lasting more than 3 weeks </li>
-                    <li>Swollen lymph nodes, such as in the neck, without ongoing infection </li>
-                    <li>Repeated or persistent chest infections, such as pneumonia</li>
-                    <li>Chest or shoulder pain without explanation </li>
-                    <li>Fatigue or weakness without explanation </li>
-                    <li>Weight loss or decreased appetite without explanation </li>
-                    <li>Increase in the number of contacts with healthcare recently </li>
-                    <li>Respiratory symptoms such as coughing, shortness of breath, or wheezing </li>
-                    <li>Cough lasting less than 4 weeks</li>
-                    <li>Coughing up blood </li>
-                    <li>Unexplained shortness of breath lasting more than 6 weeks</li>
+                    {{trueList}}
                 </ul>
             </div>
             <div class="info_row margin_b30">
                 <h4 class="pdf_gradient">Symptoms from the test that the patient is not experiencing and has therefore
                     answered no to:</h4>
                 <ul class="symptoms-list">
-                    <li>None</li>
+                     {{falseList}}
                 </ul>
             </div>
             <div class="info_row margin_b30">

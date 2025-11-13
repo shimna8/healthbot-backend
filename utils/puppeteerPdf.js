@@ -39,23 +39,62 @@ function applyReplacements(html, lang, data) {
   // Determine font path for embedded fonts in PDF
   // Use absolute file path to the project root for file:// URLs
   const fontPath = path.resolve(__dirname, '..');
-
+  const { trueList, falseList } = generateBooleanLists(data);
   const tokens = {
     '{{BASE_URL}}': baseUrl,
     '{{FONT_PATH}}': fontPath,
-    '{{AGE}}': data.age ?? '-',
-    '{{GENDER}}': data.gender ?? '-',
-    '{{SMOKER}}': data.smoker ?? '-',
-    '{{CAREGIVER}}': data.caregiver ?? '-',
-    '{{SYMPTOMS_YES}}': lang === 'ar' ? buildListAr(data.symptomsYes) : buildList(data.symptomsYes),
-    '{{SYMPTOMS_NO}}': lang === 'ar' ? buildListAr(data.symptomsNo) : buildList(data.symptomsNo),
-    '{{GENERATED_AT}}': new Date().toLocaleString(lang === 'ar' ? 'ar' : 'en-US'),
+    '{{howOld}}': getValueByKey(data , "howOld")??'-',
+    '{{smokeYears}}': getValueByKey(data , "smokeYears")??'-',
+    '{{packYears}}': getValueByKey(data , "packYears")??'-',
+    '{{trueList}}': trueList??'<li>None</li',
+    '{{falseList}}': falseList??'<li>None</li',
+    // '{{SYMPTOMS_YES}}': lang === 'ar' ? buildListAr(data.symptomsYes) : buildList(data.symptomsYes),
+    // '{{SYMPTOMS_NO}}': lang === 'ar' ? buildListAr(data.symptomsNo) : buildList(data.symptomsNo),
+    // '{{GENERATED_AT}}': new Date().toLocaleString(lang === 'ar' ? 'ar' : 'en-US'),
   };
   let out = html;
   for (const [k, v] of Object.entries(tokens)) {
     out = out.replaceAll(k, String(v));
   }
   return out;
+}
+
+function generateBooleanLists(report) {
+  const trueItems = [];
+  const falseItems = [];
+
+  report.forEach(item => {
+    if (item.type === "boolean") {
+      const li = `<li>${item.question}</li>`;
+      if (item.value === true) {
+        trueItems.push(li);
+      } else if (item.value === false) {
+        falseItems.push(li);
+      }
+    }
+  });
+
+  return {
+    trueList: trueItems.join(""),
+    falseList: falseItems.join("")
+  };
+}
+
+function getValueByKey(report, searchKey) {
+  const item = report.find(entry => entry.key === searchKey);
+  if (!item) return null;
+
+  // Handle both object and stringified JSON cases
+  if (typeof item.value === "string") {
+    try {
+      const parsed = JSON.parse(item.value);
+      return parsed.value || null;
+    } catch {
+      return item.value; // not JSON, return as-is
+    }
+  }
+
+  return item.value?.value || null;
 }
 
 async function getPuppeteer() {
