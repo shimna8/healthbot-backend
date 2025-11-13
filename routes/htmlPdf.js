@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     // console.log("---req.body?.data---",req.body)
     const fullData = req?.body || getDefaultReportData();
     const data = Array.isArray(fullData?.report) ? fullData.report : [];
-    // console.log('[HTML PDF Route] Generating PDF for language:', data);
+    console.log('[HTML PDF Route] Generating PDF for language:', data);
     const pdfBuffer = await renderReportPdf(lang, data);
 
     const timestamp = Date.now();
