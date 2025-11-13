@@ -5,16 +5,110 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- css -->
-    <!-- <link rel="stylesheet" href="./assets/style-libraries/style.css"> -->
-    <title>PDF</title>
+    <title>Health Assessment Report - PDF</title>
 </head>
 
 
 <style>
+    /* ============ A4 Page Configuration ============ */
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    /* ============ Font Families ============ */
+    @font-face {
+        font-family: Invention_Rg;
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_Rg.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: Invention_bold;
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_bold.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: Roboto-Regular;
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Roboto-Regular.ttf') format('truetype');
+    }
+
+    /* ============ CSS Variables ============ */
+    :root {
+        --white: #fff;
+        --black: #333333;
+        --blue: #0B2240;
+        --lite_blue: #DBF5ED;
+        --green: #046C64;
+        --cyan: #00857B;
+    }
+
+    /* ============ General Reset & Base Styles ============ */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        color: var(--black);
+        font-family: Invention_Rg, Arial, sans-serif;
+        font-size: 16px;
+    }
+
+    body {
+        background: var(--lite_blue);
+        margin: 0;
+        font-family: Invention_Rg, Arial, sans-serif;
+        color: #1a1a1a;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* ============ Typography ============ */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 0;
+        font-family: Invention_bold, Arial, sans-serif;
+        font-weight: 700;
+    }
+
+    a,
+    p {
+        font-size: 16px;
+        margin: 0;
+        font-family: Invention_Rg, Arial, sans-serif;
+    }
+
+    a,
+    a:hover {
+        text-decoration: none;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    /* ============ Utility Classes ============ */
+    .color_white {
+        color: #fff;
+    }
+
+    .color_green {
+        color: #26B372;
+    }
+
+    /* ============ PDF Specific Styles ============ */
+    .page {
+        width: 100%;
+    }
+
     .pdf_container {
-        max-width: 1100px;
+        width: 100%;
+        max-width: 794px;
+        /* A4 width at 96 DPI minus margins */
         margin: 0 auto;
         padding: 0px 15px;
     }
@@ -118,8 +212,11 @@
 
     .pdf_gradient {
         background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
+        color: transparent;
     }
 
     .info_col_l {
@@ -154,8 +251,11 @@
 
     .list_pdf strong {
         background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
+        color: transparent;
         padding: 7px 0px;
         font-size: 18px;
     }
@@ -216,8 +316,11 @@
         margin-bottom: 5px;
         margin-top: 30px;
         background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
+        color: transparent;
     }
 
     .info_row p,

@@ -36,8 +36,13 @@ function applyReplacements(html, lang, data) {
   // Priority: 1) Explicit data.baseUrl, 2) Environment variable, 3) Default localhost
   const baseUrl = data.baseUrl || process.env.BASE_URL || 'http://localhost:3000';
 
+  // Determine font path for embedded fonts in PDF
+  // Use absolute file path to the project root for file:// URLs
+  const fontPath = path.resolve(__dirname, '..');
+
   const tokens = {
     '{{BASE_URL}}': baseUrl,
+    '{{FONT_PATH}}': fontPath,
     '{{AGE}}': data.age ?? '-',
     '{{GENDER}}': data.gender ?? '-',
     '{{SMOKER}}': data.smoker ?? '-',
