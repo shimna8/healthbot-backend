@@ -18,8 +18,10 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   try {
     const lang = (req.body?.lang || 'en').toLowerCase() === 'ar' ? 'ar' : 'en';
-    const data = req.body?.data || getDefaultReportData();
-
+    // console.log("---req.body?.data---",req.body)
+    const fullData = req?.body || getDefaultReportData();
+    const data = Array.isArray(fullData?.report) ? fullData.report : [];
+    // console.log('[HTML PDF Route] Generating PDF for language:', data);
     const pdfBuffer = await renderReportPdf(lang, data);
 
     const timestamp = Date.now();
