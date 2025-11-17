@@ -9,29 +9,31 @@
 </head>
 
 <style>
-    /* ============ A4 Page Configuration ============ */
+   /* ==============================================
+    A4 PAGE SETTINGS
+    ============================================== */
     @page {
         size: A4;
         margin: 10mm;
     }
 
-    /* ============ Font Families ============ */
+    /* ==============================================
+    FONT DECLARATIONS
+    (Primary font: Invention — Arabic fallback added)
+    ============================================== */
     @font-face {
-        font-family: Invention_Rg;
+        font-family: 'Invention_Rg';
         src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_Rg.ttf') format('truetype');
+        font-weight: 400;
     }
 
     @font-face {
-        font-family: Invention_bold;
+        font-family: 'Invention_Bold';
         src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_bold.ttf') format('truetype');
+        font-weight: 700;
     }
 
-    @font-face {
-        font-family: Roboto-Regular;
-        src: url('file:///{{FONT_PATH}}/assets/font-families/Roboto-Regular.ttf') format('truetype');
-    }
-
-    /* ============ Arabic Font Fix (ADDED) ============ */
+    /* Arabic fallback (RECOMMENDED) */
     @font-face {
         font-family: 'Cairo';
         src: url('file:///{{FONT_PATH}}/assets/font-families/Cairo-Regular.ttf') format('truetype');
@@ -44,23 +46,39 @@
         font-weight: 700;
     }
 
-    html[lang="ar"] body,
-    html[lang="ar"] p,
+    /* ==============================================
+    RTL + DEFAULT FONT SETUP FOR ARABIC LANGUAGE
+    ============================================== */
+    html[lang="ar"] body {
+        font-family: 'Invention_Rg', 'Cairo', sans-serif !important;
+        direction: rtl;
+        unicode-bidi: plaintext;
+        background: #DBF5ED;
+        color: #1a1a1a;
+        margin: 0;
+    }
+
     html[lang="ar"] h1,
     html[lang="ar"] h2,
     html[lang="ar"] h3,
     html[lang="ar"] h4,
     html[lang="ar"] h5,
-    html[lang="ar"] h6,
-    html[lang="ar"] li,
-    html[lang="ar"] strong,
-    html[lang="ar"] b {
-        font-family: 'Cairo', sans-serif !important;
-        direction: rtl;
-        unicode-bidi: bidi-override;
+    html[lang="ar"] h6 {
+        font-family: 'Invention_Bold', 'Cairo', sans-serif !important;
+        font-weight: 700;
     }
 
-    /* ============ CSS Variables ============ */
+    html[lang="ar"] p,
+    html[lang="ar"] li,
+    html[lang="ar"] span,
+    html[lang="ar"] strong {
+        font-family: 'Invention_Rg', 'Cairo', sans-serif !important;
+        font-size: 15px;
+    }
+
+    /* ==============================================
+    COLOR VARIABLES
+    ============================================== */
     :root {
         --white: #fff;
         --black: #333333;
@@ -70,81 +88,49 @@
         --cyan: #00857B;
     }
 
-    /* ============ General Reset & Base Styles ============ */
+    /* ==============================================
+    RESETS
+    ============================================== */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        color: var(--black);
-        font-family: Invention_Rg, Arial, sans-serif;
-        font-size: 16px;
     }
 
-    body {
-        background: var(--lite_blue);
-        margin: 0;
-        font-family: Invention_Rg, Arial, sans-serif;
-        color: #1a1a1a;
-    }
-
-    html {
-        scroll-behavior: smooth;
-    }
-
-    /* ============ Typography ============ */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        margin: 0;
-        font-family: Invention_bold, Arial, sans-serif;
-        font-weight: 700;
-    }
-
-    a,
-    p {
-        font-size: 14px;
-        margin: 0;
-        font-family: Invention_Rg, Arial, sans-serif;
-    }
-
-    a,
-    a:hover {
-        text-decoration: none;
-    }
-
-    strong,
-    b {
-        text-decoration: none;
-    }
-
+    /* Fix image scaling */
     img {
-        width: 100%;
         max-width: 100%;
         height: auto;
     }
 
-    /* ============ Utility Classes ============ */
-    .color_white {
-        color: #fff;
-    }
-
-    .color_green {
-        color: #26B372;
-    }
-
-    /* ============ PDF Specific Styles ============ */
-    .page {
-        width: 100%;
-    }
-
+    /* ==============================================
+    LAYOUT UTILITIES
+    ============================================== */
     .pdf_container {
         width: 100%;
         max-width: 794px;
         margin: 0 auto;
-        padding: 0px 15px;
+        padding: 0 15px;
+    }
+
+    .pdf_flex {
+        display: flex;
+    }
+
+    .margin_b30 {
+        margin-bottom: 30px;
+    }
+
+    .mt-20 {
+        margin-top: 20px;
+    }
+
+    /* ==============================================
+    HEADER
+    ============================================== */
+    .header_pdf {
+        background: var(--white);
+        padding: 20px 0;
     }
 
     .header_pdf_inner {
@@ -153,67 +139,40 @@
         align-items: center;
     }
 
-    .header_pdf {
-        background: white;
-        padding: 20px 0px;
-    }
-
-    .logo-section {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
     .logo-section img {
         max-width: 255px;
-    }
-
-    .lung-icon {
-        width: 40px;
-        height: 40px;
-        fill: #2c7a7b;
-    }
-
-    .logo-text {
-        font-size: 20px;
-        font-weight: bold;
-        color: #2c7a7b;
     }
 
     .msd-logo {
         max-width: 166px;
     }
 
+    /* ==============================================
+    BANNER
+    ============================================== */
     .banner_pdf {
-        background: -webkit-linear-gradient(358deg, #26B372 0%, #377FB8 100%);
-        color: white;
-        padding: 50px 0px;
+        background: linear-gradient(358deg, #26B372, #377FB8);
+        color: var(--white);
+        padding: 50px 0;
         text-align: center;
         font-style: italic;
     }
 
     .banner_pdf p {
-        color: #fff;
         font-size: 20px;
-        max-width: 890px;
-        margin: 0 auto;
+        color: #fff;
     }
 
-    .intro-section {
-        background: #f0f9f8;
-        padding: 30px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .pdf_flex {
-        display: flex;
+    /* ==============================================
+    DOCTOR SECTION
+    ============================================== */
+    .dr_section {
+        background-color: #DBF5ED;
     }
 
     .dr_left {
         width: 60%;
-        padding: 20px 0px;
+        padding: 20px 0;
     }
 
     .dr_right {
@@ -221,36 +180,33 @@
         max-width: 300px;
     }
 
-    .dr_section .pdf_flex {
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .dr_section {
-        background-color: #DBF5ED;
-        overflow: visible;
-    }
-
-    .dr_right img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-    }
-
     .dr_left p {
         font-size: 18px;
-        padding: 20px 10px 20px 0px;
-        font-family: Invention_bold;
     }
 
+    /* ==============================================
+    GRADIENT TEXT
+    ============================================== */
     .pdf_gradient {
-        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
-        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372, #377FB8);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
-        color: transparent;
+    }
+
+    /* ==============================================
+    INFORMATION BOXES
+    ============================================== */
+    .information_box,
+    .information_box_1 {
+        background-color: var(--white);
+        padding: 50px 0 30px;
+    }
+
+    .info_row {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
     }
 
     .info_col_l {
@@ -261,127 +217,74 @@
         width: 15%;
     }
 
-    .info_col_l h2 {
-        font-size: 24px;
-        margin-bottom: 4px;
-    }
-
-    .information_box,
-    .information_box_1 {
-        background-color: #fff;
-        padding: 50px 0px 30px 0px;
-    }
-
+    /* List formatting */
     .list_pdf {
         list-style-type: none;
-        padding: 0px;
-        margin: 15px 0px 0px 0px;
+        margin-top: 15px;
     }
 
     .list_pdf li {
-        font-size: 16px;
         margin-bottom: 7px;
+        font-size: 16px;
     }
 
     .list_pdf strong {
-        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
-        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-        padding: 7px 0px;
         font-size: 18px;
+        background: linear-gradient(74deg, #26B372, #377FB8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    .safe_barcode {
-        background: #fff;
-        position: relative;
-        border-radius: 15px;
-        border: 1px solid #377FB8;
-        padding: 20px 30px;
-        text-align: center;
-    }
-
-    .info_row {
-        justify-content: space-between;
-    }
-
-    .safe_barcode p {
-        line-height: 19px;
-        font-size: 16px;
-    }
-
-    .margin_b30 {
-        margin-bottom: 30px;
-    }
-
+    /* Symptoms list bullets */
     .symptoms-list {
-        list-style-type: none;
+        list-style: none;
+        padding: 0;
     }
 
     .symptoms-list li {
         position: relative;
-        padding-left: 28px;
+        padding-right: 28px; /* Because RTL */
         margin-bottom: 10px;
     }
 
     .symptoms-list li::before {
         content: "";
         position: absolute;
-        left: 0;
-        top: 5px;
+        right: 0;
+        top: 6px;
         width: 10px;
         height: 10px;
         background-color: #00857B;
         border-radius: 50%;
     }
 
-    .info_row h4 {
-        max-width: 880px;
-        font-size: 25px;
-        margin-bottom: 10px;
+    /* ==============================================
+    SAFE BARCODE BOX
+    ============================================== */
+    .safe_barcode {
+        background: var(--white);
+        border: 1px solid #377FB8;
+        padding: 20px 30px;
+        border-radius: 15px;
+        text-align: center;
     }
 
-    .information_box_1 h4 {
-        max-width: 880px;
-        font-size: 25px;
-        margin-bottom: 5px;
-        margin-top: 30px;
-        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
-        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-    }
-
-    .info_row p,
-    .information_box_1 p {
-        font-size: 16px;
-    }
-
-    .mt-20 {
-        margin-top: 20px;
-    }
-
+    /* ==============================================
+    FOOTER
+    ============================================== */
     .footer_barcode {
         border-top: 30px solid #DBF5ED;
-        padding: 100px 0px;
+        padding: 100px 0;
         display: flex;
-        align-items: center;
         justify-content: center;
-        background: -webkit-linear-gradient(358deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(358deg, #26B372, #377FB8);
     }
 
     .copy_right_pdf {
-        background-color: #fff;
-        padding: 25px 0px;
+        background: var(--white);
+        padding: 25px 0;
     }
 
-    .footer_barcode img {
-        width: 206px;
-    }
 </style>
 
 <body>
@@ -509,14 +412,7 @@
             <h4>بحة الصوت</h4>
             <p>عندما تكون بحة في الصوت، لا يبدو صوتك كما هو معتاد. من الشائع تجربة بحة في الصوت مع نزلة برد،
                 ولكنها قد تحدث أيضًا نتيجة للإفراط في استخدام الصوت. في معظم الحالات، يختفي المشكلة من تلقاء
-                نفسها.</p>
-
-            <h4>الغدد الليمفاوية المتورمة</h4>
-            <p>الغدد الليمفاوية المتورمة شائعة. قد تشعر بأنها مؤلمة وأكبر من المعتاد. يحدث ذلك عندما ينشط جهازك
-                المناعي للدفاع عن جسمك ضد الفيروسات والبكتيريا. يوصى بأن يتم تقييم الغدد الليمفاوية المتورمة من
-                قبل الطبيب إذا كانت مصاحبة لجرح مصاب، إذا كانت أكبر من 1.5 سنتيمترًا بدون عدوى شديدة في الحلق،
-                إذا كانت ثابتة أو ثابتة، أو إذا كانت لديك غدد ليمفاوية متورمة في مناطق متعددة من جسمك مع أعراض
-                مثل الشحوب أو التعب أو الحمى.</p>
+                نفسها.</p>            
 
             <h4>التهابات الصدر المتكررة أو المستمرة</h4>
             <p>التهابات الجهاز التنفسي، مثل التهاب الشعب الهوائية والالتهاب الرئوي، تؤثر على مجاري الهواء
