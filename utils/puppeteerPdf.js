@@ -31,6 +31,17 @@ async function loadTemplate(lang) {
   return html;
 }
 
+function getNextDayFormatted() {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0'); // Months start at 0
+    const yyyy = d.getFullYear();
+
+    return `${dd}/${mm}/${yyyy}`;
+}
+
 function applyReplacements(html, lang, data) {
   // Determine base URL for assets (logo, images, etc.)
   // Priority: 1) Explicit data.baseUrl, 2) Environment variable, 3) Default localhost
@@ -48,6 +59,8 @@ function applyReplacements(html, lang, data) {
     '{{packYears}}': getValueByKey(data , "packYears")??'-',
     '{{trueList}}': trueList??'<li>None</li',
     '{{falseList}}': falseList??'<li>None</li',
+    '{{expiryDate}}': getNextDayFormatted(),
+    '{{currentYear}}': new Date().getFullYear(),
     // '{{SYMPTOMS_YES}}': lang === 'ar' ? buildListAr(data.symptomsYes) : buildList(data.symptomsYes),
     // '{{SYMPTOMS_NO}}': lang === 'ar' ? buildListAr(data.symptomsNo) : buildList(data.symptomsNo),
     // '{{GENERATED_AT}}': new Date().toLocaleString(lang === 'ar' ? 'ar' : 'en-US'),
@@ -69,7 +82,7 @@ function generateBooleanLists(reportArray, questionsDict) {
   reportArray.forEach((item) => {
     if (item?.type === "boolean" && typeof item?.value === "boolean") {
       let questionText;
-      console.log("item------------------", item);
+      // console.log("item------------------", item);
       if (item?.value === true) {
         // Use positive if exists, else fallback
         questionText = item.positive || questionsDict?.[item.key] || item.question || item.key;

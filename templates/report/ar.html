@@ -31,6 +31,35 @@
         src: url('file:///{{FONT_PATH}}/assets/font-families/Roboto-Regular.ttf') format('truetype');
     }
 
+    /* ============ Arabic Font Fix (ADDED) ============ */
+    @font-face {
+        font-family: 'Cairo';
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Cairo-Regular.ttf') format('truetype');
+        font-weight: 400;
+    }
+
+    @font-face {
+        font-family: 'Cairo';
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Cairo-Bold.ttf') format('truetype');
+        font-weight: 700;
+    }
+
+    html[lang="ar"] body,
+    html[lang="ar"] p,
+    html[lang="ar"] h1,
+    html[lang="ar"] h2,
+    html[lang="ar"] h3,
+    html[lang="ar"] h4,
+    html[lang="ar"] h5,
+    html[lang="ar"] h6,
+    html[lang="ar"] li,
+    html[lang="ar"] strong,
+    html[lang="ar"] b {
+        font-family: 'Cairo', sans-serif !important;
+        direction: rtl;
+        unicode-bidi: bidi-override;
+    }
+
     /* ============ CSS Variables ============ */
     :root {
         --white: #fff;
@@ -114,7 +143,6 @@
     .pdf_container {
         width: 100%;
         max-width: 794px;
-        /* A4 width at 96 DPI minus margins */
         margin: 0 auto;
         padding: 0px 15px;
     }
@@ -180,10 +208,6 @@
     }
 
     .pdf_flex {
-        display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
         display: flex;
     }
 
@@ -310,7 +334,6 @@
         width: 10px;
         height: 10px;
         background-color: #00857B;
-        /* teal/green bullet */
         border-radius: 50%;
     }
 
@@ -408,21 +431,13 @@
                         للحصول على رعاية طبية من أجل التشخيص المبكر. فيما يلي ملخص لكيفية إجابة المريض.</p>
 
                     <ul class="list_pdf">
-                        <li>
-                            <strong>العمر: </strong> {{howOld}}
-                        </li>
-                        <li>
-                            <strong>التدخين: </strong> {{smokeYears}}
-                        </li>
-                        <li>
-                            <strong>عدد السنوات كمدخن:</strong> {{packYears}}
-                        </li>
-                        <li>
-                            <strong>عدد السجائر يومياً: </strong> --
-                        </li>
+                        <li><strong>العمر: </strong> {{howOld}}</li>
+                        <li><strong>التدخين: </strong> {{smokeYears}}</li>
+                        <li><strong>عدد السنوات كمدخن:</strong> {{packYears}}</li>
+                        <li><strong>عدد السجائر يومياً: </strong> --</li>
                     </ul>
-
                 </div>
+
                 <div class="info_col_r">
                     <div class="safe_barcode">
                         <img src="{{BASE_URL}}/assets/images/safe_barcode.png" alt="img">
@@ -433,17 +448,14 @@
 
             <div class="info_row margin_b30">
                 <h4 class="pdf_gradient">الأعراض التي يعاني منها المريض والتي أجاب بنعم عليها:</h4>
-
-                <ul class="symptoms-list">
-                    {{trueList}}
-                </ul>
+                <ul class="symptoms-list">{{trueList}}</ul>
             </div>
+
             <div class="info_row margin_b30">
                 <h4 class="pdf_gradient">الأعراض التي لا يعاني منها المريض والتي أجاب بلا عليها:</h4>
-                <ul class="symptoms-list">
-                    {{falseList}}
-                </ul>
+                <ul class="symptoms-list">{{falseList}}</ul>
             </div>
+
             <div class="info_row margin_b30">
                 <p>الاستبيان ليس أداة تشخيصية ولا يقدم أي شكل آخر من أشكال النصائح الصحية، وبالتالي لا يحل محل
                     الاتصال بالمتخصصين في الرعاية الصحية أو تقييم الطبيب. الهدف منه هو زيادة الوعي بين البالغين
@@ -452,7 +464,6 @@
 
                 <p class="mt-20"><i>تم تطوير الاستبيان من قبل MSD وتم التحقق منه من قبل جورجيوس تساكوناس، طبيب
                         مرخص، دكتوراه، رئيس قسم الأورام.</i></p>
-
             </div>
 
         </div>
@@ -529,13 +540,14 @@
     <div class="footer_barcode">
         <img src="{{BASE_URL}}/assets/images/footer_barcode.png" alt="img">
     </div>
+
     <div class="copy_right_pdf">
         <div class="pdf_container">
-            حقوق الطبع والنشر © 2025 ميرك وشركاه، رحاوي، نيوجيرسي، الولايات المتحدة الأمريكية والشركات التابعة
+            حقوق الطبع والنشر © {{currentYear}} ميرك وشركاه، رحاوي، نيوجيرسي، الولايات المتحدة الأمريكية والشركات التابعة
             لها. جميع الحقوق محفوظة. الرمز الطبي.
             في حال كنت بحاجة إلى أي تحديث أو لديك استفسار أو تحتاج إلى الإبلاغ عن رد فعل سلبي، يمكنك الاتصال
             على الرقم: +9714 4269100 فاكس: +9714 4269204 البريد الإلكتروني: DPOC.GULF@MSD.COM <br>
-            هذا الموقع مخصص لسكان الإمارات العربية المتحدة. تاريخ الانتهاء: 31/11/2027
+            {{expiryDate}}
         </div>
     </div>
 
