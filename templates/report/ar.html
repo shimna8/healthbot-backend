@@ -1,107 +1,544 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>تقرير تقييم صحة الرئة</title>
-  <style>
-    @page { size: A4; margin: 10mm; }
-    * { box-sizing: border-box; }
-    body { font-family: "Noto Naskh Arabic", "Amiri", "Arial", sans-serif; color: #1a1a1a; margin: 0; }
-    .page { width: 100%; }
-    .container { width: 100%; max-width: 794px; margin: 0 auto; }
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px; }
-    .logo { font-weight: 700; color: #0a7cc1; font-size: 18px; }
-    .logo.left { order: 2; }
-    .logo.right { color: #0b8f6a; order: 1; }
-    .logo img { height: 28px; display: block; }
-    .banner { background: linear-gradient(90deg,#1aa47b,#2ec4b6); color: #fff; padding: 12px 16px; text-align: center; border-radius: 8px; margin: 6px 8px 16px; font-size: 13px; }
-    .summary { display: grid; grid-template-columns: 1fr 160px; gap: 16px; background: #f5faf8; margin: 0 8px 16px; border-radius: 8px; padding: 16px; }
-    .summary h2 { margin: 0 0 6px; color: #0a7cc1; font-size: 16px; }
-    .summary p { margin: 0; font-size: 12px; color: #444; }
-    .summary .photo { width: 160px; height: 120px; border-radius: 8px; background: url('https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=800&auto=format&fit=crop') center/cover no-repeat; }
-
-    h3.title { color: #0a7cc1; margin: 20px 8px 6px; font-size: 15px; }
-    .card { margin: 0 8px 14px; border: 1px solid #e6eef5; border-radius: 10px; overflow: hidden; }
-    .card .section { padding: 14px 16px; }
-    .muted { color: #6b7280; font-size: 12px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .info-list { list-style: none; padding: 0; margin: 0; font-size: 12px; }
-    .info-list li { padding: 6px 8px; border: 1px solid #e6eef5; border-radius: 6px; background: #f9fcff; }
-
-    .symp { border-right: 4px solid #22c55e; }
-    .symp.neg { border-right-color: #ef4444; }
-    .symp h4 { margin: 0 0 6px; font-size: 13px; color: #111827; }
-    .symp ul { margin: 0; padding-right: 18px; font-size: 12px; }
-
-    .note { margin: 16px 8px; background: #f9fafb; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 8px; font-size: 12px; }
-    .footer { text-align: center; color: #6b7280; font-size: 11px; margin: 18px 8px 0; }
-
-    .section-image { width: 100%; height: 130px; border-radius: 10px; background: url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat; }
-  </style>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>تقرير تقييم الصحة - PDF</title>
 </head>
+
+<style>
+    /* ============ A4 Page Configuration ============ */
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    /* ============ Font Families ============ */
+    @font-face {
+        font-family: Invention_Rg;
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_Rg.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: Invention_bold;
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_bold.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: Roboto-Regular;
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Roboto-Regular.ttf') format('truetype');
+    }
+
+    /* ============ CSS Variables ============ */
+    :root {
+        --white: #fff;
+        --black: #333333;
+        --blue: #0B2240;
+        --lite_blue: #DBF5ED;
+        --green: #046C64;
+        --cyan: #00857B;
+    }
+
+    /* ============ General Reset & Base Styles ============ */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        color: var(--black);
+        font-family: Invention_Rg, Arial, sans-serif;
+        font-size: 16px;
+    }
+
+    body {
+        background: var(--lite_blue);
+        margin: 0;
+        font-family: Invention_Rg, Arial, sans-serif;
+        color: #1a1a1a;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* ============ Typography ============ */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 0;
+        font-family: Invention_bold, Arial, sans-serif;
+        font-weight: 700;
+    }
+
+    a,
+    p {
+        font-size: 14px;
+        margin: 0;
+        font-family: Invention_Rg, Arial, sans-serif;
+    }
+
+    a,
+    a:hover {
+        text-decoration: none;
+    }
+
+    strong,
+    b {
+        text-decoration: none;
+    }
+
+    img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* ============ Utility Classes ============ */
+    .color_white {
+        color: #fff;
+    }
+
+    .color_green {
+        color: #26B372;
+    }
+
+    /* ============ PDF Specific Styles ============ */
+    .page {
+        width: 100%;
+    }
+
+    .pdf_container {
+        width: 100%;
+        max-width: 794px;
+        /* A4 width at 96 DPI minus margins */
+        margin: 0 auto;
+        padding: 0px 15px;
+    }
+
+    .header_pdf_inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header_pdf {
+        background: white;
+        padding: 20px 0px;
+    }
+
+    .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .logo-section img {
+        max-width: 255px;
+    }
+
+    .lung-icon {
+        width: 40px;
+        height: 40px;
+        fill: #2c7a7b;
+    }
+
+    .logo-text {
+        font-size: 20px;
+        font-weight: bold;
+        color: #2c7a7b;
+    }
+
+    .msd-logo {
+        max-width: 166px;
+    }
+
+    .banner_pdf {
+        background: -webkit-linear-gradient(358deg, #26B372 0%, #377FB8 100%);
+        color: white;
+        padding: 50px 0px;
+        text-align: center;
+        font-style: italic;
+    }
+
+    .banner_pdf p {
+        color: #fff;
+        font-size: 20px;
+        max-width: 890px;
+        margin: 0 auto;
+    }
+
+    .intro-section {
+        background: #f0f9f8;
+        padding: 30px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .pdf_flex {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+    }
+
+    .dr_left {
+        width: 60%;
+        padding: 20px 0px;
+    }
+
+    .dr_right {
+        width: 35%;
+        max-width: 300px;
+    }
+
+    .dr_section .pdf_flex {
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .dr_section {
+        background-color: #DBF5ED;
+        overflow: visible;
+    }
+
+    .dr_right img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .dr_left p {
+        font-size: 18px;
+        padding: 20px 10px 20px 0px;
+        font-family: Invention_bold;
+    }
+
+    .pdf_gradient {
+        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    .info_col_l {
+        width: 83%;
+    }
+
+    .info_col_r {
+        width: 15%;
+    }
+
+    .info_col_l h2 {
+        font-size: 24px;
+        margin-bottom: 4px;
+    }
+
+    .information_box,
+    .information_box_1 {
+        background-color: #fff;
+        padding: 50px 0px 30px 0px;
+    }
+
+    .list_pdf {
+        list-style-type: none;
+        padding: 0px;
+        margin: 15px 0px 0px 0px;
+    }
+
+    .list_pdf li {
+        font-size: 16px;
+        margin-bottom: 7px;
+    }
+
+    .list_pdf strong {
+        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        padding: 7px 0px;
+        font-size: 18px;
+    }
+
+    .safe_barcode {
+        background: #fff;
+        position: relative;
+        border-radius: 15px;
+        border: 1px solid #377FB8;
+        padding: 20px 30px;
+        text-align: center;
+    }
+
+    .info_row {
+        justify-content: space-between;
+    }
+
+    .safe_barcode p {
+        line-height: 19px;
+        font-size: 16px;
+    }
+
+    .margin_b30 {
+        margin-bottom: 30px;
+    }
+
+    .symptoms-list {
+        list-style-type: none;
+    }
+
+    .symptoms-list li {
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 10px;
+    }
+
+    .symptoms-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 10px;
+        height: 10px;
+        background-color: #00857B;
+        /* teal/green bullet */
+        border-radius: 50%;
+    }
+
+    .info_row h4 {
+        max-width: 880px;
+        font-size: 25px;
+        margin-bottom: 10px;
+    }
+
+    .information_box_1 h4 {
+        max-width: 880px;
+        font-size: 25px;
+        margin-bottom: 5px;
+        margin-top: 30px;
+        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    .info_row p,
+    .information_box_1 p {
+        font-size: 16px;
+    }
+
+    .mt-20 {
+        margin-top: 20px;
+    }
+
+    .footer_barcode {
+        border-top: 30px solid #DBF5ED;
+        padding: 100px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: -webkit-linear-gradient(358deg, #26B372 0%, #377FB8 100%);
+    }
+
+    .copy_right_pdf {
+        background-color: #fff;
+        padding: 25px 0px;
+    }
+
+    .footer_barcode img {
+        width: 206px;
+    }
+</style>
+
 <body>
-  <div class="page">
-    <div class="container">
-      <div class="header">
-        <div class="logo right"><img src="{{BASE_URL}}/assets/images/logo.png" alt="MSD" /></div>
-        <div class="logo left"><img src="{{BASE_URL}}/assets/images/safe-lungs.png" alt="SafeLungs" /></div>
-      </div>
-
-      <div class="banner">لتنزيل ملف PDF بنتيجتك، اضغط على الثلاث نقاط في أعلى اليمين ثم اختر "الفتح في متصفح خارجي"</div>
-
-      <div class="summary">
-        <div>
-          <h2>هذا ملخص لإجاباتك في اختبار أعراض صحة الرئة</h2>
-          <p>لقد أجبت بنعم على بعض الأسئلة وتواجه أعراضًا يجب تقييمها من قبل الطبيب.</p>
+    <div class="header_pdf">
+        <div class="pdf_container">
+            <div class="header_pdf_inner">
+                <div class="logo-section">
+                    <img src="{{BASE_URL}}/assets/images/pdf_lungs.png" alt="img">
+                </div>
+                <img class="msd-logo" src="{{BASE_URL}}/assets/images/pdf_msd.png" alt="img">
+            </div>
         </div>
-        <div class="photo" aria-hidden="true"></div>
-      </div>
-
-      <h3 class="title">معلومات للطبيب</h3>
-      <div class="card">
-        <div class="section grid-2">
-          <ul class="info-list">
-            <li><strong>العمر:</strong> {{AGE}}</li>
-            <li><strong>النوع:</strong> {{GENDER}}</li>
-            <li><strong>التدخين:</strong> {{SMOKER}}</li>
-            <li><strong>مقدم الرعاية/الشريك:</strong> {{CAREGIVER}}</li>
-          </ul>
-          <div style="display:flex;align-items:center;justify-content:center;">
-            <img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=health" width="100" height="100" style="border:1px solid #e5e7eb;border-radius:8px;"/>
-          </div>
-        </div>
-      </div>
-
-      <div class="card symp">
-        <div class="section">
-          <h4>الأعراض التي يعاني منها المريض ولذلك أجاب بنعم</h4>
-          <ul>
-            {{SYMPTOMS_YES}}
-          </ul>
-        </div>
-      </div>
-
-      <div class="card symp neg">
-        <div class="section">
-          <h4>الأعراض التي لا يعاني منها المريض ولذلك أجاب بلا</h4>
-          <ul>
-            {{SYMPTOMS_NO}}
-          </ul>
-        </div>
-      </div>
-
-      <div class="note">
-        نود مشاركة معلومات حول الأعراض الشائعة التي قد ترتبط بأمراض الرئة، ولكن تذكر أن الهدف هو زيادة فهمك فقط. الطبيب وحده من يمكنه تأكيد التشخيص بدقة. ليست كل الأعراض خطيرة، فقد تزول من تلقاء نفسها، بينما يحتاج بعضها إلى تقييم طبي.
-      </div>
-
-      <div class="section-image"></div>
-
-      <div class="footer">
-        تم الإنشاء في {{GENERATED_AT}} · سري – للاستخدام المصرح به فقط
-      </div>
     </div>
-  </div>
-</body>
-</html>
 
+    <div class="banner_pdf">
+        <div class="pdf_container">
+            <p>
+                لتحميل الملف PDF مع نتائجك، اضغط على النقاط الثلاثة في الزاوية العليا اليمنى واختر "فتح في المتصفح
+                الخارجي".
+            </p>
+        </div>
+    </div>
+
+    <div class="dr_section">
+        <div class="pdf_container">
+            <div class="pdf_flex">
+                <div class="dr_left">
+                    <p class="pdf_gradient">هذا هو ملخص إجاباتك من اختبار أعراض صحة الرئة. لقد أجبت بنعم على بعض الأسئلة
+                        وتعاني من أعراض يجب أن يتم تقييمها من قبل طبيب.</p>
+                </div>
+                <div class="dr_right">
+                    <img src="{{BASE_URL}}/assets/images/dr_image_1.png" alt="img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="information_box">
+        <div class="pdf_container">
+            <div class="info_row pdf_flex margin_b30">
+                <div class="info_col_l">
+                    <h2 class="pdf_gradient">معلومات لطبيبك</h2>
+                    <p>أكمل مريضك اختبار أعراض صحة الرئة على lunghälsan.se وأجاب على الأسئلة المتعلقة بأي أعراض
+                        يشعر بها بشأن صحته الرئوية. يتكون الاختبار من أسئلة حول أعراض الرئة حيث يمكن للمريض الإجابة
+                        بنعم أو لا، بالإضافة إلى أسئلة حول عمر المريض وعاداته في التدخين. الهدف من هذا الاختبار هو
+                        زيادة الوعي بين البالغين حول أمراض الرئة، بما في ذلك سرطان الرئة، وتشجيع المرضى على السعي
+                        للحصول على رعاية طبية من أجل التشخيص المبكر. فيما يلي ملخص لكيفية إجابة المريض.</p>
+
+                    <ul class="list_pdf">
+                        <li>
+                            <strong>العمر: </strong> {{howOld}}
+                        </li>
+                        <li>
+                            <strong>التدخين: </strong> {{smokeYears}}
+                        </li>
+                        <li>
+                            <strong>عدد السنوات كمدخن:</strong> {{packYears}}
+                        </li>
+                        <li>
+                            <strong>عدد السجائر يومياً: </strong> --
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="info_col_r">
+                    <div class="safe_barcode">
+                        <img src="{{BASE_URL}}/assets/images/safe_barcode.png" alt="img">
+                        <p class="pdf_gradient">الصفحة الرئيسية لـ SafeLungs</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info_row margin_b30">
+                <h4 class="pdf_gradient">الأعراض التي يعاني منها المريض والتي أجاب بنعم عليها:</h4>
+
+                <ul class="symptoms-list">
+                    {{trueList}}
+                </ul>
+            </div>
+            <div class="info_row margin_b30">
+                <h4 class="pdf_gradient">الأعراض التي لا يعاني منها المريض والتي أجاب بلا عليها:</h4>
+                <ul class="symptoms-list">
+                    {{falseList}}
+                </ul>
+            </div>
+            <div class="info_row margin_b30">
+                <p>الاستبيان ليس أداة تشخيصية ولا يقدم أي شكل آخر من أشكال النصائح الصحية، وبالتالي لا يحل محل
+                    الاتصال بالمتخصصين في الرعاية الصحية أو تقييم الطبيب. الهدف منه هو زيادة الوعي بين البالغين
+                    حول أمراض الرئة، بما في ذلك سرطان الرئة، ومساعدة أولئك الذين أكملوا الاستبيان على فهم الخطوات
+                    التالية المتاحة بشكل عام.</p>
+
+                <p class="mt-20"><i>تم تطوير الاستبيان من قبل MSD وتم التحقق منه من قبل جورجيوس تساكوناس، طبيب
+                        مرخص، دكتوراه، رئيس قسم الأورام.</i></p>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="dr_section">
+        <div class="pdf_container">
+            <div class="pdf_flex">
+                <div class="dr_left">
+                    <p class="pdf_gradient">نريد مشاركة معلومات حول الأعراض الشائعة التي قد تكون مرتبطة بأمراض الرئة ولكن
+                        تذكر أن هذا فقط لزيادة فهمك. فقط الطبيب يمكنه إجراء التشخيص الدقيق. يرجى ملاحظة أن ليس كل
+                        الأعراض خطيرة، وبعضها قد يختفي من تلقاء نفسه، في حين أن البعض الآخر قد يحتاج إلى تقييم من
+                        قبل الطبيب.</p>
+                </div>
+                <div class="dr_right">
+                    <img src="{{BASE_URL}}/assets/images/dr_image_2.png" alt="img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="information_box_1">
+        <div class="pdf_container">
+
+            <h4>السعال</h4>
+            <p>السعال هو وسيلة لمجاري الهواء للتخلص من الأشياء التي تزعجها. غالبًا ما يكون السعال بسبب نزلة
+                برد ثم يختفي من تلقاء نفسه، رغم أنه قد يستمر لعدة أسابيع. يمكن أن يحدث السعال أيضًا بسبب
+                أمراض أخرى في المجاري الهوائية أو الرئتين، أو بسبب المهيجات مثل الدخان. يجب دائمًا تقييم السعال
+                المصحوب بالدم من قبل الطبيب. غالبًا ما تكون العدوى هي السبب، ولكن يجب استبعاد الحالات الأخرى.</p>
+
+            <h4>ضيق التنفس</h4>
+            <p>قد لا يكون ضيق التنفس شيئًا يدعو للقلق، لكن في بعض الأحيان يمكن أن يكون خطيرًا ويتطلب المساعدة
+                الطبية. الأسباب الشائعة تشمل الربو، التهابات الجهاز التنفسي مثل الالتهاب الرئوي، السمنة، والتدخين.
+                كما يمكن أن يكون علامة على نوبة هلع. ومع ذلك، في بعض الحالات، قد يشير إلى شيء أكثر خطورة مثل
+                حالة رئوية تسمى مرض الانسداد الرئوي المزمن (COPD) أو سرطان الرئة.</p>
+
+            <h4>الأزيز</h4>
+            <p>الأزيز هو الصوت الذي تسمعه عندما يكون مجرى الهواء مسدودًا جزئيًا. يمكن أن يكون هذا الانسداد نتيجة
+                لعدة حالات مثل ردود الفعل التحسسية، نزلات البرد، التهاب الشعب الهوائية، أو الحساسية. بالإضافة إلى
+                ذلك، قد يكون الأزيز أحد أعراض الربو، الالتهاب الرئوي، فشل القلب، وحالات أخرى. قد يختفي من تلقاء
+                نفسه، ولكنه قد يشير أيضًا إلى حالة أساسية خطيرة.</p>
+
+            <h4>بحة الصوت</h4>
+            <p>عندما تكون بحة في الصوت، لا يبدو صوتك كما هو معتاد. من الشائع تجربة بحة في الصوت مع نزلة برد،
+                ولكنها قد تحدث أيضًا نتيجة للإفراط في استخدام الصوت. في معظم الحالات، يختفي المشكلة من تلقاء
+                نفسها.</p>
+
+            <h4>الغدد الليمفاوية المتورمة</h4>
+            <p>الغدد الليمفاوية المتورمة شائعة. قد تشعر بأنها مؤلمة وأكبر من المعتاد. يحدث ذلك عندما ينشط جهازك
+                المناعي للدفاع عن جسمك ضد الفيروسات والبكتيريا. يوصى بأن يتم تقييم الغدد الليمفاوية المتورمة من
+                قبل الطبيب إذا كانت مصاحبة لجرح مصاب، إذا كانت أكبر من 1.5 سنتيمترًا بدون عدوى شديدة في الحلق،
+                إذا كانت ثابتة أو ثابتة، أو إذا كانت لديك غدد ليمفاوية متورمة في مناطق متعددة من جسمك مع أعراض
+                مثل الشحوب أو التعب أو الحمى.</p>
+
+            <h4>التهابات الصدر المتكررة أو المستمرة</h4>
+            <p>التهابات الجهاز التنفسي، مثل التهاب الشعب الهوائية والالتهاب الرئوي، تؤثر على مجاري الهواء
+                والرئتين. الالتهاب الرئوي عادة ما يكون نتيجة عدوى بكتيرية، ويتم علاجه بالمضادات الحيوية. إذا كنت
+                تعاني من نوبات متكررة من هذه الالتهابات، فقد يشير ذلك إلى مشكلة صحية أساسية.</p>
+
+            <h4>ألم الصدر أو الكتف</h4>
+            <p>ألم الصدر والكتف يمكن أن يكون له عدة أسباب. على سبيل المثال، يمكن أن يكون بسبب حصى في المرارة،
+                الذبحة الصدرية أو أمراض القلب الأخرى. قد يكون أيضًا نتيجة التهاب التامور (التهاب التامور)،
+                التصلب الرئوي (التهاب الجنبة) أو التهاب البنكرياس (التهاب البنكرياس). إذا كنت تعاني من ألم غير
+                مفسر في صدرك أو كتفك يستمر، من المهم زيارة الطبيب للتقييم.</p>
+
+            <h4>ألم الصدر أو الكتف</h4>
+            <p>ألم الصدر والكتف يمكن أن يكون له عدة أسباب. على سبيل المثال، يمكن أن يكون بسبب حصى في المرارة،
+                الذبحة الصدرية أو أمراض القلب الأخرى. قد يكون أيضًا نتيجة التهاب التامور (التهاب التامور)،
+                التصلب الرئوي (التهاب الجنبة) أو التهاب البنكرياس (التهاب البنكرياس). إذا كنت تعاني من ألم غير
+                مفسر في صدرك أو كتفك يستمر، من المهم زيارة الطبيب للتقييم.</p>
+        </div>
+    </div>
+
+    <div class="footer_barcode">
+        <img src="{{BASE_URL}}/assets/images/footer_barcode.png" alt="img">
+    </div>
+    <div class="copy_right_pdf">
+        <div class="pdf_container">
+            حقوق الطبع والنشر © 2025 ميرك وشركاه، رحاوي، نيوجيرسي، الولايات المتحدة الأمريكية والشركات التابعة
+            لها. جميع الحقوق محفوظة. الرمز الطبي.
+            في حال كنت بحاجة إلى أي تحديث أو لديك استفسار أو تحتاج إلى الإبلاغ عن رد فعل سلبي، يمكنك الاتصال
+            على الرقم: +9714 4269100 فاكس: +9714 4269204 البريد الإلكتروني: DPOC.GULF@MSD.COM <br>
+            هذا الموقع مخصص لسكان الإمارات العربية المتحدة. تاريخ الانتهاء: 31/11/2027
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -69,7 +69,7 @@ function generateBooleanLists(reportArray, questionsDict) {
   reportArray.forEach((item) => {
     if (item?.type === "boolean" && typeof item?.value === "boolean") {
       let questionText;
-
+      console.log("item------------------", item);
       if (item?.value === true) {
         // Use positive if exists, else fallback
         questionText = item.positive || questionsDict?.[item.key] || item.question || item.key;
@@ -91,7 +91,7 @@ function generateBooleanLists(reportArray, questionsDict) {
 
 
 function getValueByKey(reportDict, searchKey) {
-  console.log("reportDict------------------", reportDict);
+  // console.log("reportDict------------------", reportDict);
   
   // Check if reportDict is an array
   if (!Array.isArray(reportDict)) return null;
