@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Health Assessment Report - PDF</title>
+</head>
+
+<style>
+   /* ==============================================
+    A4 PAGE SETTINGS
+    ============================================== */
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    /* ==============================================
+    FONT DECLARATIONS
+    (Primary font: Invention — Arabic fallback added)
+    ============================================== */
+    @font-face {
+        font-family: 'Invention_Rg';
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_Rg.ttf') format('truetype');
+        font-weight: 400;
+    }
+
+    @font-face {
+        font-family: 'Invention_Bold';
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_bold.ttf') format('truetype');
+        font-weight: 700;
+    }
+
+    /* Arabic fallback (RECOMMENDED) */
+    @font-face {
+        font-family: 'Cairo';
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Cairo-Regular.ttf') format('truetype');
+        font-weight: 400;
+    }
+
+    @font-face {
+        font-family: 'Cairo';
+        src: url('file:///{{FONT_PATH}}/assets/font-families/Cairo-Bold.ttf') format('truetype');
+        font-weight: 700;
+    }
+
+    /* ==============================================
+    RTL + DEFAULT FONT SETUP FOR ARABIC LANGUAGE
+    ============================================== */
+    html[lang="ar"] body {
+        font-family: 'Invention_Rg', 'Cairo', sans-serif !important;
+        direction: rtl;
+        unicode-bidi: plaintext;
+        background: #DBF5ED;
+        color: #1a1a1a;
+        margin: 0;
+    }
+
+    html[lang="ar"] h1,
+    html[lang="ar"] h2,
+    html[lang="ar"] h3,
+    html[lang="ar"] h4,
+    html[lang="ar"] h5,
+    html[lang="ar"] h6 {
+        font-family: 'Invention_Bold', 'Cairo', sans-serif !important;
+        font-weight: 700;
+    }
+
+    html[lang="ar"] p,
+    html[lang="ar"] li,
+    html[lang="ar"] span,
+    html[lang="ar"] strong {
+        font-family: 'Invention_Rg', 'Cairo', sans-serif !important;
+    }
+
+    /* ==============================================
+    COLOR VARIABLES
+    ============================================== */
+    :root {
+        --white: #fff;
+        --black: #333333;
+        --blue: #0B2240;
+        --lite_blue: #DBF5ED;
+        --green: #046C64;
+        --cyan: #00857B;
+    }
+
+    /* ==============================================
+    RESETS
+    ============================================== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Fix image scaling */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* ==============================================
+    LAYOUT UTILITIES
+    ============================================== */
+    .pdf_container {
+        width: 100%;
+        max-width: 1170px;
+        margin: 0 auto;
+        padding: 0px 15px;
+    }
+
+    .pdf_flex {
+        display: flex;
+    }
+
+    .margin_b30 {
+        margin-bottom: 30px;
+    }
+    .info_row_text {
+        display: block;
+    }
+    .mt-20 {
+        margin-top: 20px;
+    }
+
+    /* ==============================================
+    HEADER
+    ============================================== */
+    .header_pdf {
+        background: var(--white);
+        padding: 20px 0;
+    }
+
+    .header_pdf_inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo-section img {
+        max-width: 255px;
+    }
+
+    .msd-logo {
+        max-width: 166px;
+    }
+
+    /* ==============================================
+    BANNER
+    ============================================== */
+    .banner_pdf {
+        background: linear-gradient(358deg, #26B372, #377FB8);
+        color: var(--white);
+        padding: 50px 0;
+        text-align: center;
+        font-style: italic;
+    }
+
+    .banner_pdf p {
+        color: #fff;
+        font-size: 28px;
+        max-width: 890px;
+        margin: 0 auto;
+    }
+
+    /* ==============================================
+    DOCTOR SECTION
+    ============================================== */
+    .dr_section {
+        background-color: #DBF5ED;
+    }
+
+    .dr_left {
+        width: 60%;
+        padding: 20px 0;
+    }
+
+    .dr_right {
+        width: 40%;
+        max-width: 450px;
+    }
+
+    .dr_left p {
+        font-size: 25px;
+        font-weight: bold;
+        padding: 20px 10px 20px 0px;
+    }
+
+    /* ==============================================
+    GRADIENT TEXT
+    ============================================== */
+    .pdf_gradient {
+        background: linear-gradient(74deg, #26B372, #377FB8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* ==============================================
+    INFORMATION BOXES
+    ============================================== */
+    .information_box,
+    .information_box_1 {
+        background-color: var(--white);
+        padding: 50px 0 30px;
+    }
+
+    .info_row {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .info_col_l {
+        width: 83%;
+    }
+
+    .info_col_r {
+        width: 15%;
+    }
+    .info_col_l h2 {
+        font-size: 35px;
+        margin-bottom: 10px;
+    }
+    .info_row h4 {
+    max-width: 880px;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+    /* List formatting */
+    .list_pdf {
+        list-style-type: none;
+        margin-top: 15px;
+    }
+
+    .list_pdf li {
+        margin-bottom: 7px;
+        font-size: 16px;
+    }
+
+    .list_pdf strong {
+        font-size: 18px;
+        background: linear-gradient(74deg, #26B372, #377FB8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Symptoms list bullets */
+    .symptoms-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .symptoms-list li {
+        position: relative;
+        padding-right: 28px; /* Because RTL */
+        margin-bottom: 10px;
+    }
+
+    .symptoms-list li::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 6px;
+        width: 10px;
+        height: 10px;
+        background-color: #00857B;
+        border-radius: 50%;
+    }
+    .information_box_1 h4 {
+        max-width: 880px;
+        font-size: 25px;
+        margin-bottom: 5px;
+        margin-top: 30px;
+        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372 0%, #26B372 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+    /* ==============================================
+    SAFE BARCODE BOX
+    ============================================== */
+    .safe_barcode {
+        background: var(--white);
+        border: 1px solid #377FB8;
+        padding: 20px 30px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    /* ==============================================
+    FOOTER
+    ============================================== */
+    .footer_barcode {
+        border-top: 30px solid #DBF5ED;
+        padding: 100px 0;
+        display: flex;
+        justify-content: center;
+        background: linear-gradient(358deg, #26B372, #377FB8);
+    }
+
+    .copy_right_pdf {
+        background: var(--white);
+        padding: 25px 0;
+    }
+    .copy_right_pdf p {
+        font-size: 16px;
+        line-height: 26px;
+    }
+
+</style>
+
+
+
+<body>
+    <div class="header_pdf">
+        <div class="pdf_container">
+            <div class="header_pdf_inner">
+                <div class="logo-section">
+                    <img src="{{BASE_URL}}/assets/images/pdf_lungs.png" alt="img">
+                </div>
+                <img class="msd-logo" src="{{BASE_URL}}/assets/images/pdf_msd.png" alt="img">
+            </div>
+        </div>
+    </div>
+
+    <div class="banner_pdf">
+        <div class="pdf_container">
+            <p>
+                هل تود حفظ نسخة من نتائجك؟ اضغط على الثلات نقاط أعلى يمين الشاشة، ثم اختر 'فتح في متصفح خارجي' لتحميل ملف الـPDF.
+            </p>
+        </div>
+    </div>
+
+    <div class="dr_section">
+        <div class="pdf_container">
+            <div class="pdf_flex">
+                <div class="dr_left">
+                    <p class="pdf_gradient">
+                        إليك ملخص نتائجك في تقييم صحة الرئة. بناءً على إجاباتك، تبين وجود أعراض تتطلب زيارة الطبيب المختص للاطمئنان على صحتك وتقييم حالتك.
+                    </p>
+                </div>
+                <div class="dr_right">
+                    <img src="{{BASE_URL}}/assets/images/dr_image_1.png" alt="img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="information_box">
+        <div class="pdf_container">
+            <div class="info_row pdf_flex margin_b30">
+                <div class="info_col_l">
+                    <h2 class="pdf_gradient">معلومات للطبيب</h2>
+
+                    <p>
+                        قام المريض بإجراء تقييم لصحة الرئة على موقع lunghälsan.se موضحًا الأعراض التي يشعر بها. يتضمن التقييم أسئلة (نعم/لا) حول الأعراض، بالإضافة إلى أسئلة عن العمر وعادات التدخين. الغرض من الاختبار هو رفع مستوى الوعي بأمراض الرئة، بما في ذلك سرطان الرئة، وتشجيع المرضى على استشارة الطبيب عند ظهور أي أعراض لضمان التشخيص المبكر. وفيما يلي ملخص النتائج:
+                    </p>
+
+                    <ul class="list_pdf">
+                        <li><strong>السن: </strong> {{howOld}}</li>
+                        <li><strong>عادات التدخين: </strong> {{smokeYears}}</li>
+                        <li><strong>عدد سنوات التدخين: </strong> {{packYears}}</li>
+                        <li><strong>عدد السجائر المستهلكة يوميًا: </strong> --</li>
+                    </ul>
+
+                </div>
+
+                <div class="info_col_r">
+                    <div class="safe_barcode">
+                        <img src="{{BASE_URL}}/assets/images/safe_barcode.png" alt="img">
+                        <p class="pdf_gradient">الصفحة الرئيسية لـ SafeLungs</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info_row_text margin_b30">
+                <h4 class="pdf_gradient">الأعراض التي أكد المريض وجودها (أجاب عنها بـ "نعم"):</h4>
+                <ul class="symptoms-list">
+                    {{trueList}}
+                </ul>
+            </div>
+
+            <div class="info_row_text margin_b30">
+                <h4 class="pdf_gradient">الأعراض التي لا يعاني منها المريض (أجاب عنها بـ "لا"):</h4>
+                <ul class="symptoms-list">
+                    {{falseList}}                    
+                </ul>
+            </div>
+
+            <div class="margin_b30">
+                <p>
+                    تنويه هام: هذا الاستبيان ليس أداة تشخيصية، ولا يُعتبر بديلاً عن الاستشارة الطبية المتخصصة، ولا يغني بأي حال عن مراجعة الطبيب للتقييم الدقيق. الهدف الحصري لهذا الاختبار هو تعزيز الوعي لدى البالغين بأمراض الرئة (ومنها سرطان الرئة)، وتوجيه المستخدمين بشكل عام نحو الخطوات والإجراءات المناسبة لمتابعة حالتهم.
+                </p>
+
+                <p class="mt-20">
+                    <i>تم إعداد هذا التقييم من قبل شركة MSD، وجرت مراجعته واعتماده طبيًا بواسطة الدكتور جورجيوس تساكوناس (طبيب مرخص، وحاصل على الدكتوراه، وكبير استشاريي الأورام).</i>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="dr_section">
+        <div class="pdf_container">
+            <div class="pdf_flex">
+                <div class="dr_left">
+                    <p class="pdf_gradient">
+                        نود إطلاعك على بعض الأعراض الشائعة المرتبطة بأمراض الرئة لغرض التوعية فقط، علمًا بأن الطبيب المختص هو المرجع الوحيد للتشخيص. يرجى ملاحظة أن ليست كل الأعراض خطيرة، فبعضها قد يزول تلقائيًا، بينما يستلزم البعض الآخر زيارة الطبيب للاطمئنان.
+                    </p>
+                </div>
+                <div class="dr_right">
+                    <img src="{{BASE_URL}}/assets/images/dr_image_2.png" alt="img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- done -->
+    <div class="information_box_1">
+        <div class="pdf_container">
+
+            <h4>الكحة</h4>
+            <p>
+                السعال هو وسيلة دفاعية لتنقية الشعب الهوائية من المواد المهيجة. في معظم الحالات، يكون سببه نزلات البرد ويزول تلقائيًا، رغم أنه قد يطول لعدة أسابيع. قد يكون السعال أيضًا مؤشرًا على أمراض صدرية أخرى أو ناتجًا عن التدخين. أما السعال المصحوب بالدم، فيستدعي فحصًا طبيًا فوريًا. ورغم أن العدوى هي السبب الأكثر شيوعًا، إلا أنه من الضروري التأكد من عدم وجود أسباب أخرى.
+            </p>
+
+            <h4>ضيق التنفس</h4>
+            <p>
+                قد يكون ضيق التنفس عرضًا عابرًا لا يستدعي القلق، ولكنه في حالات أخرى قد يكون جديًا ويستلزم مراجعة الطبيب. تشمل الأسباب الشائعة: الربو، وعدوى الجهاز التنفسي (كالالتهاب الرئوي)، والسمنة، والتدخين، كما قد ينتج عن نوبات الهلع.  ومع ذلك، يجب الانتباه إلى أن ضيق التنفس قد يكون أحيانًا مؤشرًا على حالة صحية أكثر خطورة، مثل مرض الانسداد الرئوي المزمن  أو سرطان الرئة.
+            </p>
+
+            <h4>الأزيز أو الصفير</h4>
+            <p>
+                الأزيز هو صوت صفير ينتج عن انسداد جزئي في الشعب الهوائية. تتراوح أسبابه بين نزلات البرد، والتهاب الشعب الهوائية، وردود الفعل التحسسية. كما يمكن أن يكون الأزيز عرضًا للإصابة بالربو، أو الالتهاب الرئوي، أو قصور القلب. ورغم أنه قد يزول تلقائيًا، إلا أنه قد يكون أيضًا دليلًا على وجود مشكلة طبية تستوجب التقييم الطبي.
+            </p>
+
+            <h4>بحة الصوت</h4>
+            <p>
+                تُعرف بحة الصوت بأنها تغير في نبرة الصوت. غالبًا ما تكون ناتجة عن نزلات البرد أو إجهاد الأحبال الصوتية. وعادةً ما تختفي هذه المشكلة تلقائيًا دون الحاجة لعلاج.
+            </p>
+
+            <h4>التهابات صدرية متكررة أو مستمرة</h4>
+            <p>
+                تؤثر التهابات الجهاز التنفسي (كالتهاب الشعب الهوائية والالتهاب الرئوي) على الممرات التنفسية والرئتين. غالبًا ما يكون الالتهاب الرئوي ناتجًا عن عدوى بكتيرية تُعالج بالمضادات الحيوية. إذا كنت تعاني من تكرار الإصابة بهذه الالتهابات، فقد يكون ذلك مؤشرًا على وجود مشكلة صحية تستدعي مراجعة الطبيب.
+            </p>
+
+            <h4>آلام الصدر والكتف</h4>
+            <p>
+                تتعدد أسباب آلام الصدر والكتف؛ فقد تكون ناتجة عن حصوات المرارة، أو الذبحة الصدرية، أو مشاكل القلب المختلفة. كذلك، قد يكون السبب التهابًا في غشاء التامور (غشاء القلب)، أو الغشاء الجنبي (غشاء الرئة)، أو البنكرياس.  إذا كنت تعاني من ألم مستمر في الصدر أو الكتف دون سبب واضح، يُرجى زيارة الطبيب للفحص والتقييم.
+            </p>
+
+        </div>
+    </div>
+
+    <div class="footer_barcode">
+        <img src="{{BASE_URL}}/assets/images/footer_barcode.png" alt="img">
+    </div>
+
+    <div class="copy_right_pdf">
+        <div class="pdf_container">
+           <p>
+            حقوق الطبع والنشر © {{currentYear}} ميرك وشركاه، رحاوي، نيوجيرسي، الولايات المتحدة الأمريكية والشركات التابعة
+            لها. جميع الحقوق محفوظة. الرمز الطبي.
+            في حال كنت بحاجة إلى أي تحديث أو لديك استفسار أو تحتاج إلى الإبلاغ عن رد فعل سلبي، يمكنك الاتصال
+            على الرقم: +9714 4269100 فاكس: +9714 4269204 البريد الإلكتروني: DPOC.GULF@MSD.COM <br>
+            {{expiryDate}}
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
