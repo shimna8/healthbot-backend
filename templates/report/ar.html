@@ -73,7 +73,6 @@
     html[lang="ar"] span,
     html[lang="ar"] strong {
         font-family: 'Invention_Rg', 'Cairo', sans-serif !important;
-        font-size: 15px;
     }
 
     /* ==============================================
@@ -108,9 +107,9 @@
     ============================================== */
     .pdf_container {
         width: 100%;
-        max-width: 794px;
+        max-width: 1170px;
         margin: 0 auto;
-        padding: 0 15px;
+        padding: 0px 15px;
     }
 
     .pdf_flex {
@@ -159,8 +158,10 @@
     }
 
     .banner_pdf p {
-        font-size: 20px;
         color: #fff;
+        font-size: 28px;
+        max-width: 890px;
+        margin: 0 auto;
     }
 
     /* ==============================================
@@ -176,12 +177,14 @@
     }
 
     .dr_right {
-        width: 35%;
-        max-width: 300px;
+        width: 40%;
+        max-width: 450px;
     }
 
     .dr_left p {
-        font-size: 18px;
+        font-size: 25px;
+        font-weight: bold;
+        padding: 20px 10px 20px 0px;
     }
 
     /* ==============================================
@@ -216,7 +219,15 @@
     .info_col_r {
         width: 15%;
     }
-
+    .info_col_l h2 {
+        font-size: 35px;
+        margin-bottom: 10px;
+    }
+    .info_row h4 {
+    max-width: 880px;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
     /* List formatting */
     .list_pdf {
         list-style-type: none;
@@ -257,7 +268,18 @@
         background-color: #00857B;
         border-radius: 50%;
     }
-
+    .information_box_1 h4 {
+        max-width: 880px;
+        font-size: 25px;
+        margin-bottom: 5px;
+        margin-top: 30px;
+        background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background: linear-gradient(74deg, #26B372 0%, #26B372 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
     /* ==============================================
     SAFE BARCODE BOX
     ============================================== */
@@ -283,6 +305,10 @@
     .copy_right_pdf {
         background: var(--white);
         padding: 25px 0;
+    }
+    .copy_right_pdf p {
+        font-size: 16px;
+        line-height: 26px;
     }
 
 </style>
@@ -316,8 +342,10 @@
                         وتعاني من أعراض يجب أن يتم تقييمها من قبل طبيب.</p>
                 </div>
                 <div class="dr_right">
+                   
                     <img src="{{BASE_URL}}/assets/images/dr_image_1.png" alt="img">
                 </div>
+                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -359,7 +387,7 @@
                 <ul class="symptoms-list">{{falseList}}</ul>
             </div>
 
-            <div class="info_row margin_b30">
+            <div class="margin_b30">
                 <p>الاستبيان ليس أداة تشخيصية ولا يقدم أي شكل آخر من أشكال النصائح الصحية، وبالتالي لا يحل محل
                     الاتصال بالمتخصصين في الرعاية الصحية أو تقييم الطبيب. الهدف منه هو زيادة الوعي بين البالغين
                     حول أمراض الرئة، بما في ذلك سرطان الرئة، ومساعدة أولئك الذين أكملوا الاستبيان على فهم الخطوات
@@ -439,11 +467,13 @@
 
     <div class="copy_right_pdf">
         <div class="pdf_container">
+            <p>
             حقوق الطبع والنشر © {{currentYear}} ميرك وشركاه، رحاوي، نيوجيرسي، الولايات المتحدة الأمريكية والشركات التابعة
             لها. جميع الحقوق محفوظة. الرمز الطبي.
             في حال كنت بحاجة إلى أي تحديث أو لديك استفسار أو تحتاج إلى الإبلاغ عن رد فعل سلبي، يمكنك الاتصال
             على الرقم: +9714 4269100 فاكس: +9714 4269204 البريد الإلكتروني: DPOC.GULF@MSD.COM <br>
             {{expiryDate}}
+            </p>
         </div>
     </div>
 

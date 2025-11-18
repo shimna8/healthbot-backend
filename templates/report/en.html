@@ -114,8 +114,7 @@
 
     .pdf_container {
         width: 100%;
-        max-width: 794px;
-        /* A4 width at 96 DPI minus margins */
+        max-width: 1170px;
         margin: 0 auto;
         padding: 0px 15px;
     }
@@ -167,7 +166,7 @@
 
     .banner_pdf p {
         color: #fff;
-        font-size: 20px;
+        font-size: 28px;
         max-width: 890px;
         margin: 0 auto;
     }
@@ -194,8 +193,8 @@
     }
 
     .dr_right {
-        width: 35%;
-        max-width: 300px;
+        width: 40%;
+        max-width: 450px;
     }
 
     .dr_section .pdf_flex {
@@ -216,9 +215,10 @@
     }
 
     .dr_left p {
-        font-size: 18px;
+        font-size: 25px;
+        font-weight: bold;
         padding: 20px 10px 20px 0px;
-        font-family: Invention_bold;
+        /* font-family: Invention_bold; */
     }
 
     .pdf_gradient {
@@ -239,8 +239,8 @@
     }
 
     .info_col_l h2 {
-        font-size: 24px;
-        margin-bottom: 4px;
+        font-size: 35px;
+        margin-bottom: 10px;
     }
 
     .information_box,
@@ -337,6 +337,8 @@
     .info_row p,
     .information_box_1 p {
         font-size: 16px;
+        line-height: 26px;
+
     }
 
     .mt-20 {
@@ -357,6 +359,11 @@
         padding: 25px 0px;
     }
 
+    .copy_right_pdf p {
+        font-size: 16px;
+        line-height: 26px;
+    }
+
     .footer_barcode img {
         width: 206px;
     }
@@ -369,6 +376,8 @@
             <div class="header_pdf_inner">
                 <div class="logo-section">
                     <img src="{{BASE_URL}}/assets/images/pdf_lungs.png" alt="img">
+                   
+
                 </div>
                 <img class="msd-logo" src="{{BASE_URL}}/assets/images/pdf_msd.png" alt="img">
             </div>
@@ -393,6 +402,7 @@
                         some questions and are experiencing symptoms that should be evaluated by a doctor.</p>
                 </div>
                 <div class="dr_right">
+                    
                     <img src="{{BASE_URL}}/assets/images/dr_image_1.png" alt="img">
                 </div>
             </div>
@@ -543,10 +553,12 @@
     </div>
     <div class="copy_right_pdf">
         <div class="pdf_container">
+            <p>
             Copyright © {{currentYear}} Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved. Medical Code.
             In case you need any update or you have an inquiry or need to report an adverse reaction, you can contact
             Tel: +9714 4269100 Fax: +9714 4269204 Email: DPOC.GULF@MSD.COM <br>
             This website is intended for UAE residents. Expiry Date: {{expiryDate}}
+            </p>
         </div>
     </div>
 
