@@ -20,9 +20,9 @@ router.post('/', async (req, res) => {
     const fullData = req?.body || getDefaultReportData();
     const data = Array.isArray(fullData?.report) ? fullData.report : [];
     const lang = (fullData?.lang || 'en').toLowerCase() === 'ar-ae' ? 'ar' : 'en';
-    console.log("---lang--------------------",lang)
+    // console.log("---lang--------------------",lang)
 
-    console.log('[HTML PDF Route] Generating PDF for language:', data);
+    // console.log('[HTML PDF Route] Generating PDF for language:', data);
     const pdfBuffer = await renderReportPdf(lang, data);
 
     const timestamp = Date.now();
