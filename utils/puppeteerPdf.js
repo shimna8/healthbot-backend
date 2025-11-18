@@ -51,14 +51,15 @@ function applyReplacements(html, lang, data) {
   // Use absolute file path to the project root for file:// URLs
   const fontPath = path.resolve(__dirname, '..');
   const { trueList, falseList } = generateBooleanLists(data);
+  const noneText = lang === 'ar' ? 'لا يوجد' : 'None';
   const tokens = {
     '{{BASE_URL}}': baseUrl,
     '{{FONT_PATH}}': fontPath,
     '{{howOld}}': getValueByKey(data , "howOld")??'-',
     '{{smokeYears}}': getValueByKey(data , "smokeYears")??'-',
     '{{packYears}}': getValueByKey(data , "packYears")??'-',
-    '{{trueList}}': trueList??'<li>None</li',
-    '{{falseList}}': falseList??'<li>None</li',
+    '{{trueList}}': trueList || `<li>${noneText}</li>`,
+    '{{falseList}}': falseList || `<li>${noneText}</li>`,
     '{{expiryDate}}': getNextDayFormatted(),
     '{{currentYear}}': new Date().getFullYear(),
     // '{{SYMPTOMS_YES}}': lang === 'ar' ? buildListAr(data.symptomsYes) : buildList(data.symptomsYes),
