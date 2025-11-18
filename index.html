@@ -683,6 +683,8 @@
 
                 // Track last message to prevent consecutive duplicates
                 let lastMessageText = null;
+                // Track if first message has been received
+                let firstMessageReceived = false;
 
                 // Create store with middleware to invoke scenario and filter duplicates
                 const store = window.WebChat.createStore({}, ({ dispatch }) => next => action => {
@@ -720,6 +722,14 @@
                     // Filter consecutive duplicate messages from bot
                     if (action.type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
                         const activity = action.payload.activity;
+
+                        // Hide loading and show webchat when first bot message arrives
+                        if (!firstMessageReceived && activity.type === 'message' && activity.from && activity.from.role === 'bot') {
+                            firstMessageReceived = true;
+                            loading.style.display = 'none';
+                            webchatDiv.style.display = 'block';
+                            console.log('✓ First bot message received, showing chat');
+                        }
 
                         // Log incoming bot messages
                         if (activity.type === 'message' && activity.text) {
@@ -773,6 +783,8 @@
                         styleOptions: {
                             // Hide upload button (keep send box container so suggested actions can render)
                             hideUploadButton: true,
+                            hideTypingIndicator: true,     // Hides bot typing indicator
+                            hideSendBox: true,            // Hides the Send box completely
 
                             // Additional style options for better appearance
                             backgroundColor: 'white',
@@ -793,10 +805,7 @@
                     webchatDiv
                 );
 
-                // Hide loading and show webchat
-                loading.style.display = 'none';
-                webchatDiv.style.display = 'block';
-
+                // Loading will be hidden when first bot message arrives
                 console.log('✓ Web Chat initialized successfully');
 
             } catch (error) {
@@ -828,11 +837,11 @@
                 webchatDiv.style.display = 'none';
 
                 // Show loading again
-                loading.style.display = 'block';
-                loading.innerHTML = `
-                    <div class="spinner"></div>
-                    <p>Connecting to SafeLungs...</p>
-                `;
+                // loading.style.display = 'block';
+                // loading.innerHTML = `
+                //     <div class="spinner"></div>
+                //     <p>Connecting to SafeLungs...</p>
+                // `;
             }, 300);
         }
 
