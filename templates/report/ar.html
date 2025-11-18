@@ -119,7 +119,9 @@
     .margin_b30 {
         margin-bottom: 30px;
     }
-
+    .info_row_text {
+        display: block;
+    }
     .mt-20 {
         margin-top: 20px;
     }
@@ -377,19 +379,23 @@
                 </div>
             </div>
 
-            <div class="info_row margin_b30">
+            <div class="info_row_text margin_b30">
                 <h4 class="pdf_gradient">الأعراض التي أكد المريض وجودها (أجاب عنها بـ "نعم"):</h4>
-                <br/>
                 <ul class="symptoms-list">
                     {{trueList}}
+                    {% if not trueList %}
+                        <li>لا يوجد</li>
+                    {% endif %}
                 </ul>
             </div>
 
-            <div class="info_row margin_b30">
+            <div class="info_row_text margin_b30">
                 <h4 class="pdf_gradient">الأعراض التي لا يعاني منها المريض (أجاب عنها بـ "لا"):</h4>
-                <br/>
                 <ul class="symptoms-list">
                     {{falseList}}
+                    {% if not falseList %}
+                        <li>لا يوجد</li>
+                    {% endif %}
                 </ul>
             </div>
 
