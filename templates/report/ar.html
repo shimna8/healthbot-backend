@@ -9,7 +9,7 @@
 </head>
 
 <style>
-   /* ==============================================
+    /* ==============================================
     A4 PAGE SETTINGS
     ============================================== */
     @page {
@@ -94,12 +94,65 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        text-decoration: none !important;
+        border-bottom: none !important;
+    }
+
+    a,
+    a:hover,
+    a:active,
+    a:visited,
+    a:focus {
+        text-decoration: none !important;
+    }
+
+    strong,
+    b {
+        text-decoration: none !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    span,
+    div {
+        text-decoration: none !important;
+        border-bottom: none !important;
     }
 
     /* Fix image scaling */
     img {
         max-width: 100%;
         height: auto;
+    }
+
+    /* Remove all underlines from h4 elements */
+    h4 {
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        text-decoration-style: none !important;
+        text-decoration-color: transparent !important;
+        border: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        -webkit-text-decoration: none !important;
+        -moz-text-decoration: none !important;
+    }
+
+    h4::before,
+    h4::after {
+        content: none !important;
+        border: none !important;
+        border-bottom: none !important;
     }
 
     /* ==============================================
@@ -119,9 +172,11 @@
     .margin_b30 {
         margin-bottom: 30px;
     }
+
     .info_row_text {
         display: block;
     }
+
     .mt-20 {
         margin-top: 20px;
     }
@@ -197,6 +252,7 @@
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
+        text-decoration: none !important;
     }
 
     /* ==============================================
@@ -221,15 +277,20 @@
     .info_col_r {
         width: 15%;
     }
+
     .info_col_l h2 {
         font-size: 35px;
         margin-bottom: 10px;
     }
+
     .info_row h4 {
-    max-width: 880px;
-    font-size: 25px;
-    margin-bottom: 10px;
-}
+        max-width: 880px;
+        font-size: 25px;
+        margin-bottom: 10px;
+        text-decoration: none !important;
+        border-bottom: none !important;
+    }
+
     /* List formatting */
     .list_pdf {
         list-style-type: none;
@@ -246,6 +307,7 @@
         background: linear-gradient(74deg, #26B372, #377FB8);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        text-decoration: none !important;
     }
 
     /* Symptoms list bullets */
@@ -256,7 +318,8 @@
 
     .symptoms-list li {
         position: relative;
-        padding-right: 28px; /* Because RTL */
+        padding-right: 28px;
+        /* Because RTL */
         margin-bottom: 10px;
     }
 
@@ -270,18 +333,45 @@
         background-color: #00857B;
         border-radius: 50%;
     }
+
     .information_box_1 h4 {
         max-width: 880px;
         font-size: 25px;
         margin-bottom: 5px;
         margin-top: 30px;
+        padding-bottom: 0 !important;
         background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
         background: linear-gradient(74deg, #26B372 0%, #26B372 100%);
+        background-image: linear-gradient(74deg, #26B372 0%, #377FB8 100%) !important;
+        background-position: 0 0 !important;
+        background-size: 100% 100% !important;
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
         color: transparent;
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        text-decoration-style: none !important;
+        text-decoration-color: transparent !important;
+        border: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        -webkit-text-decoration: none !important;
+        -moz-text-decoration: none !important;
+        -webkit-text-decoration-line: none !important;
+        -webkit-text-decoration-style: none !important;
     }
+
+    .information_box_1 h4+p {
+        border-top: none !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
     /* ==============================================
     SAFE BARCODE BOX
     ============================================== */
@@ -297,8 +387,7 @@
     FOOTER
     ============================================== */
     .footer_barcode {
-        border-top: 30px solid #DBF5ED;
-        padding: 100px 0;
+        padding: 30px 0;
         display: flex;
         justify-content: center;
         background: linear-gradient(358deg, #26B372, #377FB8);
@@ -308,11 +397,37 @@
         background: var(--white);
         padding: 25px 0;
     }
+
     .copy_right_pdf p {
         font-size: 16px;
         line-height: 26px;
     }
 
+    /* Aggressive underline removal for PDF generation (screen media type) */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    h4,
+    .information_box_1 h4,
+    .info_row h4 {
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        text-decoration-style: none !important;
+        text-decoration-color: transparent !important;
+        -webkit-text-decoration: none !important;
+        -webkit-text-decoration-line: none !important;
+        -webkit-text-decoration-style: none !important;
+        -moz-text-decoration: none !important;
+        border: 0 !important;
+        border-top: 0 !important;
+        border-bottom: 0 !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        box-shadow: none !important;
+        outline: 0 !important;
+    }
 </style>
 
 
@@ -324,7 +439,8 @@
                 <div class="logo-section">
                     <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/pdf_lungs.png" alt="img">
                 </div>
-                <img class="msd-logo" src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/pdf_msd.png" alt="img">
+                <img class="msd-logo" src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/pdf_msd.png"
+                    alt="img">
             </div>
         </div>
     </div>
@@ -332,7 +448,8 @@
     <div class="banner_pdf">
         <div class="pdf_container">
             <p>
-                هل تود حفظ نسخة من نتائجك؟ اضغط على الثلات نقاط أعلى يمين الشاشة، ثم اختر 'فتح في متصفح خارجي' لتحميل ملف الـPDF.
+                هل تود حفظ نسخة من نتائجك؟ اضغط على الثلات نقاط أعلى يمين الشاشة، ثم اختر 'فتح في متصفح خارجي' لتحميل
+                ملف الـPDF.
             </p>
         </div>
     </div>
@@ -342,7 +459,8 @@
             <div class="pdf_flex">
                 <div class="dr_left">
                     <p class="pdf_gradient">
-                        إليك ملخص نتائجك في تقييم صحة الرئة. بناءً على إجاباتك، تبين وجود أعراض تتطلب زيارة الطبيب المختص للاطمئنان على صحتك وتقييم حالتك.
+                        إليك ملخص نتائجك في تقييم صحة الرئة. بناءً على إجاباتك، تبين وجود أعراض تتطلب زيارة الطبيب
+                        المختص للاطمئنان على صحتك وتقييم حالتك.
                     </p>
                 </div>
                 <div class="dr_right">
@@ -359,7 +477,10 @@
                     <h2 class="pdf_gradient">معلومات للطبيب</h2>
 
                     <p>
-                        قام المريض بإجراء تقييم لصحة الرئة على موقع lunghälsan.se موضحًا الأعراض التي يشعر بها. يتضمن التقييم أسئلة (نعم/لا) حول الأعراض، بالإضافة إلى أسئلة عن العمر وعادات التدخين. الغرض من الاختبار هو رفع مستوى الوعي بأمراض الرئة، بما في ذلك سرطان الرئة، وتشجيع المرضى على استشارة الطبيب عند ظهور أي أعراض لضمان التشخيص المبكر. وفيما يلي ملخص النتائج:
+                        قام المريض بإجراء تقييم لصحة الرئة على موقع lunghälsan.se موضحًا الأعراض التي يشعر بها. يتضمن
+                        التقييم أسئلة (نعم/لا) حول الأعراض، بالإضافة إلى أسئلة عن العمر وعادات التدخين. الغرض من
+                        الاختبار هو رفع مستوى الوعي بأمراض الرئة، بما في ذلك سرطان الرئة، وتشجيع المرضى على استشارة
+                        الطبيب عند ظهور أي أعراض لضمان التشخيص المبكر. وفيما يلي ملخص النتائج:
                     </p>
 
                     <ul class="list_pdf">
@@ -373,7 +494,8 @@
 
                 <div class="info_col_r">
                     <div class="safe_barcode">
-                        <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/safe_barcode.png" alt="img">
+                        <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/safe_barcode.png"
+                            alt="img">
                         <p class="pdf_gradient">الصفحة الرئيسية لـ SafeLungs</p>
                     </div>
                 </div>
@@ -389,17 +511,21 @@
             <div class="info_row_text margin_b30">
                 <h4 class="pdf_gradient">الأعراض التي لا يعاني منها المريض (أجاب عنها بـ "لا"):</h4>
                 <ul class="symptoms-list">
-                    {{falseList}}                    
+                    {{falseList}}
                 </ul>
             </div>
 
             <div class="margin_b30">
                 <p>
-                    تنويه هام: هذا الاستبيان ليس أداة تشخيصية، ولا يُعتبر بديلاً عن الاستشارة الطبية المتخصصة، ولا يغني بأي حال عن مراجعة الطبيب للتقييم الدقيق. الهدف الحصري لهذا الاختبار هو تعزيز الوعي لدى البالغين بأمراض الرئة (ومنها سرطان الرئة)، وتوجيه المستخدمين بشكل عام نحو الخطوات والإجراءات المناسبة لمتابعة حالتهم.
+                    تنويه هام: هذا الاستبيان ليس أداة تشخيصية، ولا يُعتبر بديلاً عن الاستشارة الطبية المتخصصة، ولا يغني
+                    بأي حال عن مراجعة الطبيب للتقييم الدقيق. الهدف الحصري لهذا الاختبار هو تعزيز الوعي لدى البالغين
+                    بأمراض الرئة (ومنها سرطان الرئة)، وتوجيه المستخدمين بشكل عام نحو الخطوات والإجراءات المناسبة لمتابعة
+                    حالتهم.
                 </p>
 
                 <p class="mt-20">
-                    <i>تم إعداد هذا التقييم من قبل شركة MSD، وجرت مراجعته واعتماده طبيًا بواسطة الدكتور جورجيوس تساكوناس (طبيب مرخص، وحاصل على الدكتوراه، وكبير استشاريي الأورام).</i>
+                    <i>تم إعداد هذا التقييم من قبل شركة MSD، وجرت مراجعته واعتماده طبيًا بواسطة الدكتور جورجيوس تساكوناس
+                        (طبيب مرخص، وحاصل على الدكتوراه، وكبير استشاريي الأورام).</i>
                 </p>
 
             </div>
@@ -411,7 +537,9 @@
             <div class="pdf_flex">
                 <div class="dr_left">
                     <p class="pdf_gradient">
-                        نود إطلاعك على بعض الأعراض الشائعة المرتبطة بأمراض الرئة لغرض التوعية فقط، علمًا بأن الطبيب المختص هو المرجع الوحيد للتشخيص. يرجى ملاحظة أن ليست كل الأعراض خطيرة، فبعضها قد يزول تلقائيًا، بينما يستلزم البعض الآخر زيارة الطبيب للاطمئنان.
+                        نود إطلاعك على بعض الأعراض الشائعة المرتبطة بأمراض الرئة لغرض التوعية فقط، علمًا بأن الطبيب
+                        المختص هو المرجع الوحيد للتشخيص. يرجى ملاحظة أن ليست كل الأعراض خطيرة، فبعضها قد يزول تلقائيًا،
+                        بينما يستلزم البعض الآخر زيارة الطبيب للاطمئنان.
                     </p>
                 </div>
                 <div class="dr_right">
@@ -427,32 +555,46 @@
 
             <h4>الكحة</h4>
             <p>
-                السعال هو وسيلة دفاعية لتنقية الشعب الهوائية من المواد المهيجة. في معظم الحالات، يكون سببه نزلات البرد ويزول تلقائيًا، رغم أنه قد يطول لعدة أسابيع. قد يكون السعال أيضًا مؤشرًا على أمراض صدرية أخرى أو ناتجًا عن التدخين. أما السعال المصحوب بالدم، فيستدعي فحصًا طبيًا فوريًا. ورغم أن العدوى هي السبب الأكثر شيوعًا، إلا أنه من الضروري التأكد من عدم وجود أسباب أخرى.
+                السعال هو وسيلة دفاعية لتنقية الشعب الهوائية من المواد المهيجة. في معظم الحالات، يكون سببه نزلات البرد
+                ويزول تلقائيًا، رغم أنه قد يطول لعدة أسابيع. قد يكون السعال أيضًا مؤشرًا على أمراض صدرية أخرى أو ناتجًا
+                عن التدخين. أما السعال المصحوب بالدم، فيستدعي فحصًا طبيًا فوريًا. ورغم أن العدوى هي السبب الأكثر شيوعًا،
+                إلا أنه من الضروري التأكد من عدم وجود أسباب أخرى.
             </p>
 
             <h4>ضيق التنفس</h4>
             <p>
-                قد يكون ضيق التنفس عرضًا عابرًا لا يستدعي القلق، ولكنه في حالات أخرى قد يكون جديًا ويستلزم مراجعة الطبيب. تشمل الأسباب الشائعة: الربو، وعدوى الجهاز التنفسي (كالالتهاب الرئوي)، والسمنة، والتدخين، كما قد ينتج عن نوبات الهلع.  ومع ذلك، يجب الانتباه إلى أن ضيق التنفس قد يكون أحيانًا مؤشرًا على حالة صحية أكثر خطورة، مثل مرض الانسداد الرئوي المزمن  أو سرطان الرئة.
+                قد يكون ضيق التنفس عرضًا عابرًا لا يستدعي القلق، ولكنه في حالات أخرى قد يكون جديًا ويستلزم مراجعة
+                الطبيب. تشمل الأسباب الشائعة: الربو، وعدوى الجهاز التنفسي (كالالتهاب الرئوي)، والسمنة، والتدخين، كما قد
+                ينتج عن نوبات الهلع. ومع ذلك، يجب الانتباه إلى أن ضيق التنفس قد يكون أحيانًا مؤشرًا على حالة صحية أكثر
+                خطورة، مثل مرض الانسداد الرئوي المزمن أو سرطان الرئة.
             </p>
 
             <h4>الأزيز أو الصفير</h4>
             <p>
-                الأزيز هو صوت صفير ينتج عن انسداد جزئي في الشعب الهوائية. تتراوح أسبابه بين نزلات البرد، والتهاب الشعب الهوائية، وردود الفعل التحسسية. كما يمكن أن يكون الأزيز عرضًا للإصابة بالربو، أو الالتهاب الرئوي، أو قصور القلب. ورغم أنه قد يزول تلقائيًا، إلا أنه قد يكون أيضًا دليلًا على وجود مشكلة طبية تستوجب التقييم الطبي.
+                الأزيز هو صوت صفير ينتج عن انسداد جزئي في الشعب الهوائية. تتراوح أسبابه بين نزلات البرد، والتهاب الشعب
+                الهوائية، وردود الفعل التحسسية. كما يمكن أن يكون الأزيز عرضًا للإصابة بالربو، أو الالتهاب الرئوي، أو
+                قصور القلب. ورغم أنه قد يزول تلقائيًا، إلا أنه قد يكون أيضًا دليلًا على وجود مشكلة طبية تستوجب التقييم
+                الطبي.
             </p>
 
             <h4>بحة الصوت</h4>
             <p>
-                تُعرف بحة الصوت بأنها تغير في نبرة الصوت. غالبًا ما تكون ناتجة عن نزلات البرد أو إجهاد الأحبال الصوتية. وعادةً ما تختفي هذه المشكلة تلقائيًا دون الحاجة لعلاج.
+                تُعرف بحة الصوت بأنها تغير في نبرة الصوت. غالبًا ما تكون ناتجة عن نزلات البرد أو إجهاد الأحبال الصوتية.
+                وعادةً ما تختفي هذه المشكلة تلقائيًا دون الحاجة لعلاج.
             </p>
 
             <h4>التهابات صدرية متكررة أو مستمرة</h4>
             <p>
-                تؤثر التهابات الجهاز التنفسي (كالتهاب الشعب الهوائية والالتهاب الرئوي) على الممرات التنفسية والرئتين. غالبًا ما يكون الالتهاب الرئوي ناتجًا عن عدوى بكتيرية تُعالج بالمضادات الحيوية. إذا كنت تعاني من تكرار الإصابة بهذه الالتهابات، فقد يكون ذلك مؤشرًا على وجود مشكلة صحية تستدعي مراجعة الطبيب.
+                تؤثر التهابات الجهاز التنفسي (كالتهاب الشعب الهوائية والالتهاب الرئوي) على الممرات التنفسية والرئتين.
+                غالبًا ما يكون الالتهاب الرئوي ناتجًا عن عدوى بكتيرية تُعالج بالمضادات الحيوية. إذا كنت تعاني من تكرار
+                الإصابة بهذه الالتهابات، فقد يكون ذلك مؤشرًا على وجود مشكلة صحية تستدعي مراجعة الطبيب.
             </p>
 
             <h4>آلام الصدر والكتف</h4>
             <p>
-                تتعدد أسباب آلام الصدر والكتف؛ فقد تكون ناتجة عن حصوات المرارة، أو الذبحة الصدرية، أو مشاكل القلب المختلفة. كذلك، قد يكون السبب التهابًا في غشاء التامور (غشاء القلب)، أو الغشاء الجنبي (غشاء الرئة)، أو البنكرياس.  إذا كنت تعاني من ألم مستمر في الصدر أو الكتف دون سبب واضح، يُرجى زيارة الطبيب للفحص والتقييم.
+                تتعدد أسباب آلام الصدر والكتف؛ فقد تكون ناتجة عن حصوات المرارة، أو الذبحة الصدرية، أو مشاكل القلب
+                المختلفة. كذلك، قد يكون السبب التهابًا في غشاء التامور (غشاء القلب)، أو الغشاء الجنبي (غشاء الرئة)، أو
+                البنكرياس. إذا كنت تعاني من ألم مستمر في الصدر أو الكتف دون سبب واضح، يُرجى زيارة الطبيب للفحص والتقييم.
             </p>
 
         </div>
@@ -464,15 +606,17 @@
 
     <div class="copy_right_pdf">
         <div class="pdf_container">
-           <p>
-            حقوق الطبع والنشر © {{currentYear}} ميرك وشركاه، رحاوي، نيوجيرسي، الولايات المتحدة الأمريكية والشركات التابعة
-            لها. جميع الحقوق محفوظة. الرمز الطبي.
-            في حال كنت بحاجة إلى أي تحديث أو لديك استفسار أو تحتاج إلى الإبلاغ عن رد فعل سلبي، يمكنك الاتصال
-            على الرقم: +9714 4269100 فاكس: +9714 4269204 البريد الإلكتروني: DPOC.GULF@MSD.COM <br>
-            {{expiryDate}}
+            <p>
+                حقوق الطبع والنشر © {{currentYear}} ميرك وشركاه، رحاوي، نيوجيرسي، الولايات المتحدة الأمريكية والشركات
+                التابعة
+                لها. جميع الحقوق محفوظة. الرمز الطبي.
+                في حال كنت بحاجة إلى أي تحديث أو لديك استفسار أو تحتاج إلى الإبلاغ عن رد فعل سلبي، يمكنك الاتصال
+                على الرقم: +9714 4269100 فاكس: +9714 4269204 البريد الإلكتروني: DPOC.GULF@MSD.COM <br>
+                {{expiryDate}}
             </p>
         </div>
     </div>
 
 </body>
+
 </html>
