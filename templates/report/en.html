@@ -82,20 +82,66 @@
         font-family: Invention_Rg, Arial, sans-serif;
     }
 
+    * {
+        text-decoration: none !important;
+        border-bottom: none !important;
+    }
+
     a,
-    a:hover {
-        text-decoration: none;
+    a:hover,
+    a:active,
+    a:visited,
+    a:focus {
+        text-decoration: none !important;
     }
 
     strong,
     b {
-        text-decoration: none;
+        text-decoration: none !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    span,
+    div {
+        text-decoration: none !important;
+        border-bottom: none !important;
     }
 
     img {
         width: 100%;
         max-width: 100%;
         height: auto;
+    }
+
+    /* Remove all underlines from h4 elements */
+    h4 {
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        text-decoration-style: none !important;
+        text-decoration-color: transparent !important;
+        border: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        -webkit-text-decoration: none !important;
+        -moz-text-decoration: none !important;
+    }
+
+    h4::before,
+    h4::after {
+        content: none !important;
+        border: none !important;
+        border-bottom: none !important;
     }
 
     /* ============ Utility Classes ============ */
@@ -228,6 +274,7 @@
         background-clip: text;
         -webkit-text-fill-color: transparent;
         color: transparent;
+        text-decoration: none !important;
     }
 
     .info_col_l {
@@ -269,6 +316,7 @@
         color: transparent;
         padding: 7px 0px;
         font-size: 18px;
+        text-decoration: none !important;
     }
 
     .safe_barcode {
@@ -292,9 +340,11 @@
     .margin_b30 {
         margin-bottom: 30px;
     }
+
     .info_row_text {
         display: block;
     }
+
     .symptoms-list {
         list-style-type: none;
     }
@@ -321,6 +371,8 @@
         max-width: 880px;
         font-size: 25px;
         margin-bottom: 10px;
+        text-decoration: none !important;
+        border-bottom: none !important;
     }
 
     .information_box_1 h4 {
@@ -328,12 +380,37 @@
         font-size: 25px;
         margin-bottom: 5px;
         margin-top: 30px;
+        padding-bottom: 0 !important;
         background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
         background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+        background-image: linear-gradient(74deg, #26B372 0%, #377FB8 100%) !important;
+        background-position: 0 0 !important;
+        background-size: 100% 100% !important;
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
         color: transparent;
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        text-decoration-style: none !important;
+        text-decoration-color: transparent !important;
+        border: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        -webkit-text-decoration: none !important;
+        -moz-text-decoration: none !important;
+        -webkit-text-decoration-line: none !important;
+        -webkit-text-decoration-style: none !important;
+    }
+
+    .information_box_1 h4+p {
+        border-top: none !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
 
     .info_row p,
@@ -348,8 +425,7 @@
     }
 
     .footer_barcode {
-        border-top: 30px solid #DBF5ED;
-        padding: 100px 0px;
+        padding: 30px 0px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -369,6 +445,32 @@
     .footer_barcode img {
         width: 206px;
     }
+
+    /* Aggressive underline removal for PDF generation (screen media type) */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    h4,
+    .information_box_1 h4,
+    .info_row h4 {
+        text-decoration: none !important;
+        text-decoration-line: none !important;
+        text-decoration-style: none !important;
+        text-decoration-color: transparent !important;
+        -webkit-text-decoration: none !important;
+        -webkit-text-decoration-line: none !important;
+        -webkit-text-decoration-style: none !important;
+        -moz-text-decoration: none !important;
+        border: 0 !important;
+        border-top: 0 !important;
+        border-bottom: 0 !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        box-shadow: none !important;
+        outline: 0 !important;
+    }
 </style>
 </head>
 
@@ -378,10 +480,11 @@
             <div class="header_pdf_inner">
                 <div class="logo-section">
                     <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/pdf_lungs.png" alt="img">
-                   
+
 
                 </div>
-                <img class="msd-logo" src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/pdf_msd.png" alt="img">
+                <img class="msd-logo" src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/pdf_msd.png"
+                    alt="img">
             </div>
         </div>
     </div>
@@ -404,7 +507,7 @@
                         some questions and are experiencing symptoms that should be evaluated by a doctor.</p>
                 </div>
                 <div class="dr_right">
-                    
+
                     <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/dr_image_1.png" alt="img">
                 </div>
             </div>
@@ -442,7 +545,8 @@
                 </div>
                 <div class="info_col_r">
                     <div class="safe_barcode">
-                        <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/safe_barcode.png" alt="img">
+                        <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/safe_barcode.png"
+                            alt="img">
                         <p class="pdf_gradient">SafeLungs homepage</p>
                     </div>
                 </div>
@@ -461,7 +565,7 @@
                 <h4 class="pdf_gradient">Symptoms from the test that the patient is not experiencing and has therefore
                     answered no to:</h4>
                 <ul class="symptoms-list">
-                     {{falseList}}
+                    {{falseList}}
                 </ul>
             </div>
             <div class="info_row margin_b30">
@@ -533,7 +637,7 @@
                 or other heart diseases. It also may result from inflammation of the pericardium (pericarditis), the
                 pleura (pleuritis) or the pancreas (pancreatitis). If you're experiencing unexplained pain in your chest
                 or shoulder that persists, it's important to visit your doctor for evaluation.</p>
-            
+
         </div>
     </div>
 
@@ -543,10 +647,12 @@
     <div class="copy_right_pdf">
         <div class="pdf_container">
             <p>
-            Copyright © {{currentYear}} Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved. Medical Code.
-            In case you need any update or you have an inquiry or need to report an adverse reaction, you can contact
-            Tel: +9714 4269100 Fax: +9714 4269204 Email: DPOC.GULF@MSD.COM <br>
-            This website is intended for UAE residents. Expiry Date: {{expiryDate}}
+                Copyright © {{currentYear}} Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+                Medical Code.
+                In case you need any update or you have an inquiry or need to report an adverse reaction, you can
+                contact
+                Tel: +9714 4269100 Fax: +9714 4269204 Email: DPOC.GULF@MSD.COM <br>
+                This website is intended for UAE residents. Expiry Date: {{expiryDate}}
             </p>
         </div>
     </div>
