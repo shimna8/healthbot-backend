@@ -18,19 +18,28 @@
 
     /* ============ Font Families ============ */
     @font-face {
-        font-family: Invention_Rg;
-        src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_Rg.ttf') format('truetype');
+        font-family: "invention_regular";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('file:///{{FONT_PATH}}/assets/font-families/invention_regular.woff2') format('woff2'),
+             url('file:///{{FONT_PATH}}/assets/font-families/invention_regular.woff') format('woff'),
+             url('file:///{{FONT_PATH}}/assets/font-families/invention_regular.ttf') format('truetype'),
+             url('file:///{{FONT_PATH}}/assets/font-families/invention_regular.eot') format('embedded-opentype');
     }
 
     @font-face {
-        font-family: Invention_bold;
-        src: url('file:///{{FONT_PATH}}/assets/font-families/Invention_bold.ttf') format('truetype');
+        font-family: "invention_bold";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url('file:///{{FONT_PATH}}/assets/font-families/invention_bold.woff2') format('woff2'),
+             url('file:///{{FONT_PATH}}/assets/font-families/invention_bold.woff') format('woff'),
+             url('file:///{{FONT_PATH}}/assets/font-families/Invention_bold.ttf') format('truetype'),
+             url('file:///{{FONT_PATH}}/assets/font-families/invention_bold.eot') format('embedded-opentype');
     }
 
-    @font-face {
-        font-family: Roboto-Regular;
-        src: url('file:///{{FONT_PATH}}/assets/font-families/Roboto-Regular.ttf') format('truetype');
-    }
+  
 
     /* ============ CSS Variables ============ */
     :root {
@@ -48,19 +57,24 @@
         padding: 0;
         box-sizing: border-box;
         color: var(--black);
-        font-family: Invention_Rg, Arial, sans-serif;
-        font-size: 16px;
+        font-family: "invention_regular", Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        line-height: 21px;
     }
 
     body {
-        background: var(--lite_blue);
+  
         margin: 0;
-        font-family: Invention_Rg, Arial, sans-serif;
+         font-family: "invention_regular", Arial, Helvetica, sans-serif;
         color: #1a1a1a;
     }
 
     html {
         scroll-behavior: smooth;
+    }
+
+    img{
+           display: block !important;
     }
 
     /* ============ Typography ============ */
@@ -71,7 +85,7 @@
     h5,
     h6 {
         margin: 0;
-        font-family: Invention_bold, Arial, sans-serif;
+      font-family: "invention_bold", Arial, Helvetica, sans-serif;
         font-weight: 700;
     }
 
@@ -79,7 +93,7 @@
     p {
         font-size: 14px;
         margin: 0;
-        font-family: Invention_Rg, Arial, sans-serif;
+         font-family: "invention_regular", Arial, Helvetica, sans-serif;
     }
 
     * {
@@ -212,7 +226,8 @@
 
     .banner_pdf p {
         color: #fff;
-        font-size: 26px;
+        font-size: 16px;
+        line-height: 22px;
         max-width: 890px;
         margin: 0 auto;
     }
@@ -231,11 +246,13 @@
         display: -ms-flexbox;
         display: -webkit-flex;
         display: flex;
+        align-items: flex-start;
     }
 
     .dr_left {
         width: 60%;
         padding: 20px 0px;
+        margin: auto;
     }
 
     .dr_right {
@@ -243,10 +260,16 @@
         max-width: 450px;
     }
 
+    .dr_right  img{
+            display: block !important;
+    }
+
     .dr_section .pdf_flex {
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-end;
         gap: 15px;
+        margin: 0;
+        padding: 0;
     }
 
     .dr_section {
@@ -258,12 +281,14 @@
         width: 100%;
         height: auto;
         object-fit: contain;
+        display: block;
     }
 
     .dr_left p {
-        font-size: 16px;
+        font-size: 14px;
+        line-height: 22px;
         font-weight: bold;
-        padding: 20px 10px 20px 0px;
+        padding: 20px 10px 20px 4px;
         /* font-family: Invention_bold; */
     }
 
@@ -275,14 +300,24 @@
         -webkit-text-fill-color: transparent;
         color: transparent;
         text-decoration: none !important;
+        margin-bottom: 15px;
     }
 
     .info_col_l {
-        width: 83%;
+        width: 80%;
     }
 
     .info_col_r {
-        width: 15%;
+        width: 17%;
+    }
+
+    .safe_barcode img{
+          width: 100%;
+          height: auto;
+    }
+
+    .safe_barcode{
+           width: 100%;
     }
 
     .info_col_l h2 {
@@ -303,7 +338,8 @@
     }
 
     .list_pdf li {
-        font-size: 16px;
+        font-size: 13px;
+        line-height: 20px;
         margin-bottom: 7px;
     }
 
@@ -315,16 +351,17 @@
         -webkit-text-fill-color: transparent;
         color: transparent;
         padding: 7px 0px;
-        font-size: 18px;
+        font-size: 13px;
+        line-height: 21px;
         text-decoration: none !important;
     }
 
     .safe_barcode {
         background: #fff;
         position: relative;
-        border-radius: 15px;
-        border: 1px solid #377FB8;
-        padding: 20px 30px;
+        border-radius: 5px;
+        border: 1px solid #377FB8 !important;
+        padding: 10px 10px;
         text-align: center;
     }
 
@@ -333,8 +370,8 @@
     }
 
     .safe_barcode p {
-        line-height: 19px;
-        font-size: 16px;
+        font-size: 13px;
+        line-height: 21px;
     }
 
     .margin_b30 {
@@ -377,19 +414,18 @@
 
     .information_box_1 h4 {
         max-width: 880px;
-        font-size: 25px;
+        display: block;
+        font-size: 16px;
+        line-height: 28px;
         margin-bottom: 5px;
-        margin-top: 30px;
+        margin-top: 20px;
         padding-bottom: 0 !important;
         background: -webkit-linear-gradient(74deg, #26B372 0%, #377FB8 100%);
-        background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
-        background-image: linear-gradient(74deg, #26B372 0%, #377FB8 100%) !important;
-        background-position: 0 0 !important;
-        background-size: 100% 100% !important;
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
+    background: linear-gradient(74deg, #26B372 0%, #377FB8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
         text-decoration: none !important;
         text-decoration-line: none !important;
         text-decoration-style: none !important;
@@ -415,8 +451,8 @@
 
     .info_row p,
     .information_box_1 p {
-        font-size: 16px;
-        line-height: 26px;
+        font-size: 13px;
+        line-height: 21px;
 
     }
 
@@ -438,8 +474,8 @@
     }
 
     .copy_right_pdf p {
-        font-size: 16px;
-        line-height: 26px;
+        font-size: 13px;
+        line-height: 21px;
     }
 
     .footer_barcode img {
@@ -484,7 +520,7 @@
 
                 </div>
                 <img class="msd-logo" src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/pdf_msd.png"
-                    alt="img">
+                    alt="img" style="display: block !important;">
             </div>
         </div>
     </div>
@@ -492,7 +528,7 @@
     <div class="banner_pdf">
         <div class="pdf_container">
             <p>
-                To download the PDF with your results, tap the three dots in the upper right corner and select 'Open in
+                To download the PDF with your results, tap the three dots in <br/> the upper right corner and select 'Open in
                 external browser’
             </p>
         </div>
@@ -501,14 +537,14 @@
     <div class="dr_section">
         <div class="pdf_container">
             <div class="pdf_flex">
-                <div class="dr_left">
+                <div class="dr_left" style="display: block !important;">
                     <p class="pdf_gradient">This is a summary of your answers from the lung health symptom test. You
                         have answered yes to
                         some questions and are experiencing symptoms that should be evaluated by a doctor.</p>
                 </div>
-                <div class="dr_right">
+                <div class="dr_right" style="display: block !important;">
 
-                    <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/dr_image_1.png" alt="img">
+                    <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/dr_image_1.png" alt="img" style="display: block !important;">
                 </div>
             </div>
         </div>
@@ -546,8 +582,8 @@
                 <div class="info_col_r">
                     <div class="safe_barcode">
                         <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/safe_barcode.png"
-                            alt="img">
-                        <p class="pdf_gradient">SafeLungs homepage</p>
+                            alt="img" style="display: block !important;">
+                        <p class="pdf_gradient">SafeLungs <br/> homepage</p>
                     </div>
                 </div>
             </div>
@@ -593,13 +629,13 @@
                         may resolve on their own, while others may need evaluation by a doctor.</p>
                 </div>
                 <div class="dr_right">
-                    <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/dr_image_2.png" alt="img">
+                    <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/dr_image_2.png" alt="img" style="display: block !important;">
                 </div>
             </div>
         </div>
     </div>
     <!-- done -->
-    <div class="information_box_1">
+    <div class="information_box_1" style="padding-top: 20px !important;">
         <div class="pdf_container">
 
             <h4>Cough</h4>
@@ -642,7 +678,7 @@
     </div>
 
     <div class="footer_barcode">
-        <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/footer_barcode.png" alt="img">
+        <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/footer_barcode.png" alt="img" style="display: block !important;">
     </div>
     <div class="copy_right_pdf">
         <div class="pdf_container">
