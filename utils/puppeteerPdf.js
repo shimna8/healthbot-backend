@@ -33,7 +33,7 @@ async function loadTemplate(lang) {
 
 function getNextDayFormatted() {
     const d = new Date();
-    d.setDate(d.getDate() + 1);
+    d.setFullYear(d.getFullYear() + 2);
 
     const dd = String(d.getDate()).padStart(2, '0');
     const mm = String(d.getMonth() + 1).padStart(2, '0'); // Months start at 0
