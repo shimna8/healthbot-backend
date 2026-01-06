@@ -52,6 +52,9 @@ function applyReplacements(html, lang, data) {
   const fontPath = path.resolve(__dirname, '..');
   const { trueList, falseList } = generateBooleanLists(data);
   const noneText = lang === 'ar' ? 'لا يوجد' : 'None';
+  const yesAns = lang === 'en' ? "You have answered 'YES' to some questions and are experiencing symptoms that should be evaluated by a doctor.":'لقد أجبت بـ"نعم" على بعض الأسئلة، وتعاني من أعراض تستدعي تقييمها من قبل الطبيب.'
+  const noAns = lang === 'en' ? "You have answered 'NO' to all the questions, and you don't seem to have any of the symptoms that are common with lung cancer. However, if you experience any kind of symptoms, you should still contact healthcare for advice.":'لقد أجبتَ بـ"لا" على جميع الأسئلة، ولا يبدو أن لديك أيًا من الأعراض الشائعة لسرطان الرئة. مع ذلك، إذا شعرتَ بأي أعراض، فيجب عليك التواصل مع الجهات الصحية المختصة لطلب المشورة.'
+  const yesOrNo = trueList? yesAns:noAns
   const tokens = {
     '{{BASE_URL}}': baseUrl,
     '{{FONT_PATH}}': fontPath,
@@ -62,6 +65,7 @@ function applyReplacements(html, lang, data) {
     '{{falseList}}': falseList || `<li>${noneText}</li>`,
     '{{expiryDate}}': getNextDayFormatted(),
     '{{currentYear}}': new Date().getFullYear(),
+    '{{yesOrNo}}': yesOrNo,
     // '{{SYMPTOMS_YES}}': lang === 'ar' ? buildListAr(data.symptomsYes) : buildList(data.symptomsYes),
     // '{{SYMPTOMS_NO}}': lang === 'ar' ? buildListAr(data.symptomsNo) : buildList(data.symptomsNo),
     // '{{GENERATED_AT}}': new Date().toLocaleString(lang === 'ar' ? 'ar' : 'en-US'),

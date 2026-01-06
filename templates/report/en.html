@@ -77,6 +77,9 @@
            display: block !important;
     }
 
+    sup {
+        color: gray;
+        }
     /* ============ Typography ============ */
     h1,
     h2,
@@ -579,8 +582,7 @@
     <div class="banner_pdf">
         <div class="pdf_container">
             <p>
-                To download the PDF with your results, tap the three dots in <br/> the upper right corner and select 'Open in
-                external browser’
+                To download the PDF with your results, use your browser’s <br/>Download or Save option available in the PDF viewer toolbar or browser menu.
             </p>
         </div>
     </div>
@@ -589,9 +591,7 @@
         <div class="pdf_container">
             <div class="pdf_flex">
                 <div class="dr_left" style="display: block !important;">
-                    <p class="pdf_gradient">This is a summary of your answers from the lung health symptom test. You
-                        have answered yes to
-                        some questions and are experiencing symptoms that should be evaluated by a doctor.</p>
+                    <p class="pdf_gradient">This is a summary of your answers from the lung health symptom test. {{yesOrNo}}</p>
                 </div>
                 <div class="dr_right" style="display: block !important;">
 
@@ -686,60 +686,68 @@
     <!-- done -->
     <div class="information_box_1" style="padding-top: 20px !important;">
         <div class="pdf_container">
-
-            <h4>Cough</h4>
+            
+            <h4>Cough<sup>1,2</sup></h4>
             <p>Coughing is a way for the airways to try to get rid of things that irritate them. Most often, the cough
                 is due to a cold and then it goes away by itself, although it can take several weeks. Coughing can also
                 be caused by other diseases of the airways or lungs, or by irritants such as smoke. Coughing up blood
                 should always be evaluated by a doctor. An infection is often the cause, but other conditions should be
-                ruled out.</p>
+                ruled out.<sup>3</sup></p>
 
-            <h4>Shortness of breath</h4>
+            <h4>Shortness of breath<sup>1,2</sup></h4>
             <p>Shortness of breath may not be anything to worry about, but sometimes it can be serious and require
                 medical help. Common causes include asthma, respiratory tract infections like pneumonia, obesity, and
                 smoking. It can also be a sign of a panic attack. However, in some cases, it may indicate something more
-                serious, such as a lung condition called chronic obstructive pulmonary disease (COPD) or lung cancer.
+                serious, such as a lung condition called chronic obstructive pulmonary disease (COPD) or lung cancer.<sup>4</sup>
             </p>
 
-            <h4>Wheezing</h4>
+            <h4>Wheezing<sup>1,2</sup></h4>
             <p>Wheezing is the sound you hear when your airway is partially blocked. This blockage can result from
                 various conditions such as allergic reactions, colds, bronchitis, or allergies. Additionally, wheezing
                 can be a symptom of asthma, pneumonia, heart failure, and other conditions. It may resolve on its own,
-                but it can also indicate a serious underlying condition.</p>
+                but it can also indicate a serious underlying condition.<sup>5</sup></p>
 
-            <h4>Hoarseness</h4>
+            <h4>Hoarseness<sup>1,2</sup></h4>
             <p>When you're hoarse, your voice doesn't sound as it normally does. It's common to experience hoarseness
                 with a cold, but it can also result from overstraining your voice. In most cases, the problem resolves
-                on its own.</p>
+                on its own.<sup>6</sup></p>
 
-            <h4>Repeated or persistent chest infections</h4>
+            <h4>Repeated or persistent chest infections<sup>1</sup></h4>
             <p>Respiratory infections, such as bronchitis and pneumonia, affect your airways and lungs. Pneumonia is
                 typically caused by bacteria, which is treated with antibiotics. If you experience frequent episodes of
-                these infections, it could indicate an underlying health issue.</p>
+                these infections, it could indicate an underlying health issue.<sup>7</sup></p>
 
-            <h4>Chest or shoulder pain</h4>
+            <h4>Chest or shoulder pain<sup>1,2</sup></h4>
             <p>Chest and shoulder pain can have various causes. It can for example be due to gallstones, angina pectoris
                 or other heart diseases. It also may result from inflammation of the pericardium (pericarditis), the
                 pleura (pleuritis) or the pancreas (pancreatitis). If you're experiencing unexplained pain in your chest
-                or shoulder that persists, it's important to visit your doctor for evaluation.</p>
+                or shoulder that persists, it's important to visit your doctor for evaluation.<sup>8</sup></p>
             
-            <h4>Fatigue and weakness</h4>
+            <h4>Fatigue and weakness<sup>1,2</sup></h4>
             <p>The most common cause of fatigue is insufficient or poor-quality sleep. Additionally, fatigue can be a symptom of an underlying illness. Stress,
-            depression, exhaustion, or anxiety are common contributors to sleep problems, but fatigue can have various causes.</p>
+            depression, exhaustion, or anxiety are common contributors to sleep problems, but fatigue can have various causes.<sup>9</sup></p>
 
-            <h4>Weight loss and decreased appetite</h4>
-            <p>Sudden noticeable weight loss can occur after a stressful event, but it can also be a sign of a serious illness.</p>
+            <h4>Weight loss and decreased appetite<sup>1,2</sup></h4>
+            <p>Sudden noticeable weight loss can occur after a stressful event, but it can also be a sign of a serious illness.<sup>10</sup></p>
             
         </div>
     </div>
     <div class="new_section">
         <div class="pdf_container">
             <h4 class="pdf_gradient">References</h4>
-            <p>1- Website NHS. Lung cancer - symptoms [Internet]. nhs.uk. 2022 [cited 2025 Nov 27]. Available from:
-<span>https://www.nhs.uk/conditions/lung-cancer/symptoms/</span></p>
-            <p>2- Nccn.org. [cited 2025 Nov 27]. Available from:
-<span>https://www.nccn.org/patients/guidelines/content/PDF/lung_screening-patient.pdf</span></p>
-           
+            <p>1- Website NHS. Lung cancer - symptoms. nhs.uk. 2022 [cited 2025 Nov 27]. Available from: 
+            <span>https://www.nhs.uk/conditions/lung-cancer/symptoms/</span></p>
+            <p>2- Nccn.org. [cited 2025 Nov 27]. Available from: 
+            <span>https://www.nccn.org/patients/guidelines/content/PDF/lung_screening-patient.pdf</span></p>
+            <p>3- Website NHS. Cough. nhs.uk. 2025 [cited 2025 Dec 23]. Available from: <span>https://www.nhs.uk/symptoms/cough/</span></p>
+            <p>4- Website NHS. Shortness of breath. nhs.uk. 2025 [cited 2025 Dec 23]. Available from: <span>https://www.nhs.uk/symptoms/shortness-of-breath/</span></p>
+            <p>5- Wheezing. Cleveland Clinic. 2017 [cited 2025 Dec 23]. Available from: <span>https://my.clevelandclinic.org/health/symptoms/15203-wheezing</span></p>
+            <p>6- Hoarseness. Cleveland Clinic. 2023 [cited 2025 Dec 23]. Available from: <span>https://my.clevelandclinic.org/health/diseases/17105-hoarseness</span></p>
+            <p>7- Website NHS. Chest infection. nhs.uk. 2025 [cited 2025 Dec 23]. Available from:  <span>https://www.nhs.uk/conditions/chest-infection/</span></p>
+            <p>8- Website NHS. Chest pain. nhs.uk. 2025 [cited 2025 Dec 23]. Available from: <span>https://www.nhs.uk/symptoms/chest-pain/</span></p>
+            <p>9- Website NHS. Tiredness and fatigue. nhs.uk. 2025 [cited 2025 Dec 23]. Available from: <span> https://www.nhs.uk/symptoms/tiredness-and-fatigue/</span></p>
+            <p>10- Website NHS. Unintentional weight loss. nhs.uk. 2025 [cited 2025 Dec 23]. Available from: <span>https://www.nhs.uk/symptoms/unintentional-weight-loss/</span></p>
+                    
             <p class="pdf_black">Managing long-lasting lung-related symptoms can be challenging, but help is available. 
 Contact your healthcare provider or go through your symptoms together with a doctor.
             </p>
