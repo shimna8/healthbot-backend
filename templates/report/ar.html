@@ -75,6 +75,9 @@
     img{
            display: block !important;
     }
+    sup {
+        color: gray;
+    }
 
     /* ============ Typography ============ */
     h1,
@@ -584,8 +587,8 @@
     <div class="banner_pdf">
         <div class="pdf_container">
             <p>
-                هل تود حفظ نسخة من نتائجك؟ اضغط على الثلات نقاط أعلى يمين الشاشة، ثم اختر 'فتح في متصفح خارجي' لتحميل
-                ملف الـPDF.
+                هل تود حفظ نسخة من نتائجك؟
+                استخدم خيار التنزيل أو الحفظ المتوفر في شريط أدوات عارض ملفات PDF أو في قائمة المتصفح.
             </p>
         </div>
     </div>
@@ -595,12 +598,11 @@
             <div class="pdf_flex">
                 <div class="dr_left">
                     <p class="pdf_gradient">
-                        إليك ملخص نتائجك في تقييم صحة الرئة. بناءً على إجاباتك، تبين وجود أعراض تتطلب زيارة الطبيب
-                        المختص للاطمئنان على صحتك وتقييم حالتك.
+                        إليك ملخص نتائجك في تقييم صحة الرئة.{{yesOrNo}}
                     </p>
                 </div>
                 <div class="dr_right">
-                    <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/dr_image_1_3_arabic.png" alt="img">
+                    <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/dr_image_ar.png" alt="img">
                 </div>
             </div>
         </div>
@@ -613,7 +615,7 @@
                     <h2 class="pdf_gradient">معلومات لطبيبك</h2>
 
                     <p>
-                        قام المريض بإجراء تقييم لصحة الرئة على موقع lunghälsan.se موضحًا الأعراض التي يشعر بها. يتضمن
+                        قام المريض بإجراء تقييم لصحة الرئة على موقع safelungs.com موضحًا الأعراض التي يشعر بها. يتضمن
                         التقييم أسئلة (نعم/لا) حول الأعراض، بالإضافة إلى أسئلة عن العمر وعادات التدخين. الغرض من
                         الاختبار هو رفع مستوى الوعي بأمراض الرئة، بما في ذلك سرطان الرئة، وتشجيع المرضى على استشارة
                         الطبيب عند ظهور أي أعراض لضمان التشخيص المبكر. وفيما يلي ملخص النتائج:
@@ -623,7 +625,7 @@
                         <li><strong>السن: </strong> {{howOld}}</li>
                         <li><strong>عادات التدخين: </strong> {{smokeYears}}</li>
                         <li><strong>عدد سنوات التدخين: </strong> {{packYears}}</li>
-                        <li><strong>عدد السجائر المستهلكة يوميًا: </strong> --</li>
+                        <!-- <li><strong>عدد السجائر المستهلكة يوميًا: </strong> --</li> -->
                     </ul>
 
                 </div>
@@ -680,7 +682,7 @@
                     </p>
                 </div>
                 <div class="dr_right">
-                    <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/dr_image_4_arabic.png" alt="img">
+                    <img src="https://lungserver.uaenorth.cloudapp.azure.com/assets/images/pr_image_ar.png" alt="img">
                 </div>
             </div>
         </div>
@@ -747,8 +749,16 @@
     <div class="new_section">
         <div class="pdf_container">
             <h4 class="pdf_gradient">مراجع</h4>
-            <p>١- موقع هيئة الخدمات الصحية الوطنية (NHS). سرطان الرئة - الأعراض [الإنترنت]. nhs.uk. ٢٠٢٢ [تاريخ الاستشهاد: ٢٧ نوفمبر ٢٠٢٥]. متوفر على: <span>https://www.nhs.uk/conditions/lung-cancer/symptoms/</span></p>
+            <p>١- nhs.uk. سرطان الرئة – الأعراض. [تاريخ الاستشهاد: ٢٧ نوفمبر ٢٠٢٥]. متوفر على:<span>https://www.nhs.uk/conditions/lung-cancer/symptoms/</span></p>
             <p>٢- Nccn.org. [تاريخ الاستشهاد: ٢٧ نوفمبر ٢٠٢٥]. متوفر على: <span>https://www.nccn.org/patients/guidelines/content/PDF/lung_screening-patient.pdf</span></p>
+            <p>٣- nhs.uk. السعال. [تاريخ الاستشهاد: ٢٣ ديسمبر ٢٠٢٥]. متوفر على: <span>https://www.nhs.uk/symptoms/cough/</span></p>
+            <p>٤- nhs.uk. ضيق التنفس. [تاريخ الاستشهاد: ٢٣ ديسمبر ٢٠٢٥]. متوفر على:<span>https://www.nhs.uk/symptoms/shortness-of-breath/</span></p>
+            <p>٥- Cleveland Clinic. الأزيز (Wheezing). [تاريخ الاستشهاد: ٢٣ ديسمبر ٢٠٢٥]. متوفر على: <span>https://my.clevelandclinic.org/health/symptoms/15203-wheezing</span></p>
+            <p>٦- Cleveland Clinic. بُحّة الصوت (Hoarseness). [تاريخ الاستشهاد: ٢٣ ديسمبر ٢٠٢٥]. متوفر على: <span>https://my.clevelandclinic.org/health/diseases/17105-hoarseness</span></p>
+            <p>٧- nhs.uk. عدوى الصدر. [تاريخ الاستشهاد: ٢٣ ديسمبر ٢٠٢٥]. متوفر على:<span>https://www.nhs.uk/conditions/chest-infection/</span></p>
+            <p>٨- nhs.uk. ألم الصدر. [تاريخ الاستشهاد: ٢٣ ديسمبر ٢٠٢٥]. متوفر على:<span>https://www.nhs.uk/symptoms/chest-pain/</span></p>
+            <p>٩- nhs.uk. التعب والإرهاق. [تاريخ الاستشهاد: ٢٣ ديسمبر ٢٠٢٥]. متوفر على:<span> https://www.nhs.uk/symptoms/tiredness-and-fatigue/</span></p>
+            <p>١٠- nhs.uk. فقدان الوزن غير المقصود. [تاريخ الاستشهاد: ٢٣ ديسمبر ٢٠٢٥]. متوفر على: <span>https://www.nhs.uk/symptoms/unintentional-weight-loss/</span></p>
             <p class="pdf_black">قد يكون التعامل مع الأعراض المستمرة المتعلقة بالرئة صعبًا، ولكن المساعدة متوفرة.
 تواصل مع مقدم الرعاية الصحية الخاص بك أو ناقش أعراضك مع الطبيب.</p>
         </div>
@@ -763,9 +773,8 @@
                 حقوق الطبع والنشر © {{currentYear}} ميرك وشركاه، رحاوي، نيوجيرسي، الولايات المتحدة الأمريكية والشركات
                 التابعة
                 لها. جميع الحقوق محفوظة. <span>AE-NON-00688</span>.
-                في حال كنت بحاجة إلى أي تحديث أو لديك استفسار أو تحتاج إلى الإبلاغ عن رد فعل سلبي، يمكنك الاتصال
-                على الرقم: <span>+9714 4269100</span> فاكس: <span>+9714 4269204</span> البريد الإلكتروني: <span>DPOC.GULF@MSD.COM</span> <br>
-                {{expiryDate}}
+                للإبلاغ عن أي آثار جانبية أو شكاوى تتعلق بجودة المنتج أو أي معلومات أخرى تستدعي الإبلاغ عنها، أو إذا كانت لديك أي استفسارات طبية، يمكنك التواصل مع: <span>+9714 4269100</span> فاكس: <span>+9714 4269204</span> البريد الإلكتروني: <span>DPOC.GULF@MSD.COM</span> <br>
+                هذا الموقع الإلكتروني مخصص للمقيمين في دولة الإمارات العربية المتحدة. تاريخ انتهاء الصلاحية: {{expiryDate}}
             </p>
         </div>
     </div>
